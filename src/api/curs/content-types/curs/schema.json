@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cursos",
+  "info": {
+    "singularName": "curs",
+    "pluralName": "cursos",
+    "displayName": "Curs"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "titol": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string",
+      "unique": true
+    },
+    "descripcio": {
+      "type": "blocks"
+    },
+    "moduls": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::modul.modul",
+      "mappedBy": "curs"
+    }
+  }
+}
