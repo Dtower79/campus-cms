@@ -477,6 +477,7 @@ export interface ApiModulModul extends Struct.CollectionTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::modul.modul'> &
       Schema.Attribute.Private;
     ordre: Schema.Attribute.Integer;
+    preguntes: Schema.Attribute.Component<'quiz.pregunta', true>;
     publishedAt: Schema.Attribute.DateTime;
     resum: Schema.Attribute.Text;
     titol: Schema.Attribute.String;

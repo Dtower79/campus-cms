@@ -25,6 +25,11 @@
       "relation": "manyToOne",
       "target": "api::curs.curs",
       "inversedBy": "moduls"
+    },
+    "preguntes": {
+      "type": "component",
+      "component": "quiz.pregunta",
+      "repeatable": true
     }
   }
 }
