@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_quiz_preguntas",
+  "info": {
+    "displayName": "Pregunta"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string"
+    },
+    "explicacio": {
+      "type": "blocks"
+    },
+    "opcions": {
+      "type": "component",
+      "component": "quiz.opcio",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

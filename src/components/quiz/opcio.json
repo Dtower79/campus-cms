@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_quiz_opcio",
+  "info": {
+    "displayName": "Opció"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string"
+    },
+    "esCorrecta": {
+      "type": "boolean"
+    }
+  },
+  "config": {}
+}
