@@ -2,8 +2,15 @@ import path from 'path';
 const parse = require('pg-connection-string').parse;
 
 export default ({ env }) => {
-  // Comprobamos si existe la variable DATABASE_URL (Koyeb)
   const databaseUrl = env('DATABASE_URL');
+
+  console.log("----------------------------------------------------------------");
+  if (databaseUrl) {
+    console.log("✅ MODO PRODUCCIÓN: Conectando a PostgreSQL en Koyeb...");
+  } else {
+    console.log("⚠️ MODO LOCAL: Usando SQLite temporal (Los datos se borrarán).");
+  }
+  console.log("----------------------------------------------------------------");
 
   if (databaseUrl) {
     const config = parse(databaseUrl);
@@ -17,7 +24,7 @@ export default ({ env }) => {
           user: config.user,
           password: config.password,
           ssl: {
-            rejectUnauthorized: false // Obligatorio para Koyeb
+            rejectUnauthorized: false // OBLIGATORIO PARA KOYEB
           },
         },
         debug: false,
@@ -25,7 +32,6 @@ export default ({ env }) => {
     };
   }
 
-  // Configuración por defecto para local (SQLite)
   return {
     connection: {
       client: 'sqlite',
