@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "afiliados",
+  "info": {
+    "singularName": "afiliado",
+    "pluralName": "afiliados",
+    "displayName": "Afiliado"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nombre": {
+      "type": "string"
+    },
+    "apellidos": {
+      "type": "string"
+    },
+    "dni": {
+      "type": "string",
+      "unique": true
+    },
+    "email": {
+      "type": "email"
+    }
+  }
+}

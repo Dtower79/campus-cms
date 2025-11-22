@@ -430,6 +430,37 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAfiliadoAfiliado extends Struct.CollectionTypeSchema {
+  collectionName: 'afiliados';
+  info: {
+    displayName: 'Afiliado';
+    pluralName: 'afiliados';
+    singularName: 'afiliado';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    apellidos: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    dni: Schema.Attribute.String & Schema.Attribute.Unique;
+    email: Schema.Attribute.Email;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::afiliado.afiliado'
+    > &
+      Schema.Attribute.Private;
+    nombre: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCursCurs extends Struct.CollectionTypeSchema {
   collectionName: 'cursos';
   info: {
@@ -997,6 +1028,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::afiliado.afiliado': ApiAfiliadoAfiliado;
       'api::curs.curs': ApiCursCurs;
       'api::modul.modul': ApiModulModul;
       'plugin::content-releases.release': PluginContentReleasesRelease;
