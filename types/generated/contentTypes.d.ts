@@ -476,9 +476,16 @@ export interface ApiCursCurs extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     descripcio: Schema.Attribute.Blocks;
+    etiqueta: Schema.Attribute.String;
+    hores: Schema.Attribute.String;
+    imatge: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::curs.curs'> &
       Schema.Attribute.Private;
+    matriculas: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::matricula.matricula'
+    >;
     moduls: Schema.Attribute.Relation<'oneToMany', 'api::modul.modul'>;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.String & Schema.Attribute.Unique;
@@ -486,6 +493,42 @@ export interface ApiCursCurs extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiMatriculaMatricula extends Struct.CollectionTypeSchema {
+  collectionName: 'matriculas';
+  info: {
+    displayName: 'Matricula';
+    pluralName: 'matriculas';
+    singularName: 'matricula';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    curs: Schema.Attribute.Relation<'manyToOne', 'api::curs.curs'>;
+    data_inici: Schema.Attribute.DateTime;
+    estat: Schema.Attribute.Enumeration<['actiu', 'completat', 'pendent']>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::matricula.matricula'
+    > &
+      Schema.Attribute.Private;
+    nota_final: Schema.Attribute.Decimal;
+    progres: Schema.Attribute.Integer;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -515,6 +558,41 @@ export interface ApiModulModul extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiNotificacionNotificacion
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'notificacions';
+  info: {
+    displayName: 'Notificacion';
+    pluralName: 'notificacions';
+    singularName: 'notificacion';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    llegida: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::notificacion.notificacion'
+    > &
+      Schema.Attribute.Private;
+    missatge: Schema.Attribute.Text;
+    publishedAt: Schema.Attribute.DateTime;
+    tipus: Schema.Attribute.Enumeration<['sistema', 'curs', 'evaluacio']>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -973,7 +1051,6 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -993,6 +1070,14 @@ export interface PluginUsersPermissionsUser
       'plugin::users-permissions.user'
     > &
       Schema.Attribute.Private;
+    matriculas: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::matricula.matricula'
+    >;
+    notificacions: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::notificacion.notificacion'
+    >;
     password: Schema.Attribute.Password &
       Schema.Attribute.Private &
       Schema.Attribute.SetMinMaxLength<{
@@ -1030,7 +1115,9 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::afiliado.afiliado': ApiAfiliadoAfiliado;
       'api::curs.curs': ApiCursCurs;
+      'api::matricula.matricula': ApiMatriculaMatricula;
       'api::modul.modul': ApiModulModul;
+      'api::notificacion.notificacion': ApiNotificacionNotificacion;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

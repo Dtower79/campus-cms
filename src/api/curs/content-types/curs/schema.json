@@ -26,6 +26,28 @@
       "relation": "oneToMany",
       "target": "api::modul.modul",
       "mappedBy": "curs"
+    },
+    "imatge": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "hores": {
+      "type": "string"
+    },
+    "etiqueta": {
+      "type": "string"
+    },
+    "matriculas": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::matricula.matricula",
+      "mappedBy": "curs"
     }
   }
 }
