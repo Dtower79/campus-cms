@@ -23,6 +23,27 @@
     },
     "email": {
       "type": "email"
+    },
+    "TelefonoMobil": {
+      "type": "string"
+    },
+    "Provincia": {
+      "type": "string"
+    },
+    "Poblacion": {
+      "type": "string"
+    },
+    "CentroTrabajo": {
+      "type": "string"
+    },
+    "CategoriaProfesional": {
+      "type": "string"
+    },
+    "Direccion": {
+      "type": "text"
+    },
+    "IBAN": {
+      "type": "string"
     }
   }
 }

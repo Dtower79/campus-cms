@@ -442,11 +442,15 @@ export interface ApiAfiliadoAfiliado extends Struct.CollectionTypeSchema {
   };
   attributes: {
     apellidos: Schema.Attribute.String;
+    CategoriaProfesional: Schema.Attribute.String;
+    CentroTrabajo: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    Direccion: Schema.Attribute.Text;
     dni: Schema.Attribute.String & Schema.Attribute.Unique;
     email: Schema.Attribute.Email;
+    IBAN: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -454,7 +458,10 @@ export interface ApiAfiliadoAfiliado extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     nombre: Schema.Attribute.String;
+    Poblacion: Schema.Attribute.String;
+    Provincia: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    TelefonoMobil: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
