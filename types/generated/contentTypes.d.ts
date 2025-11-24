@@ -1053,6 +1053,7 @@ export interface PluginUsersPermissionsUser
     draftAndPublish: false;
   };
   attributes: {
+    apellidos: Schema.Attribute.String;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -1074,6 +1075,7 @@ export interface PluginUsersPermissionsUser
       'oneToMany',
       'api::matricula.matricula'
     >;
+    nombre: Schema.Attribute.String;
     notificacions: Schema.Attribute.Relation<
       'oneToMany',
       'api::notificacion.notificacion'

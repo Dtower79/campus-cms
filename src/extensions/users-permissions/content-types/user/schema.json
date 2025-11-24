@@ -77,6 +77,12 @@
       "relation": "oneToMany",
       "target": "api::notificacion.notificacion",
       "mappedBy": "users_permissions_user"
+    },
+    "nombre": {
+      "type": "string"
+    },
+    "apellidos": {
+      "type": "string"
     }
   }
 }
