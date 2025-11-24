@@ -617,10 +617,12 @@ export interface ApiModulModul extends Struct.CollectionTypeSchema {
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::modul.modul'> &
       Schema.Attribute.Private;
+    material_pdf: Schema.Attribute.Media<'files'>;
     ordre: Schema.Attribute.Integer;
     preguntes: Schema.Attribute.Component<'quiz.pregunta', true>;
     publishedAt: Schema.Attribute.DateTime;
     resum: Schema.Attribute.Text;
+    targetes_memoria: Schema.Attribute.Component<'material.flashcard', true>;
     titol: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

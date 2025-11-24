@@ -1,5 +1,16 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface MaterialFlashcard extends Struct.ComponentSchema {
+  collectionName: 'components_material_flashcards';
+  info: {
+    displayName: 'Flashcard';
+  };
+  attributes: {
+    pregunta: Schema.Attribute.String;
+    resposta: Schema.Attribute.Text;
+  };
+}
+
 export interface QuizOpcio extends Struct.ComponentSchema {
   collectionName: 'components_quiz_opcio';
   info: {
@@ -26,6 +37,7 @@ export interface QuizPregunta extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'material.flashcard': MaterialFlashcard;
       'quiz.opcio': QuizOpcio;
       'quiz.pregunta': QuizPregunta;
     }

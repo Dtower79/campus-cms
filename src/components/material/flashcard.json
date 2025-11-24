@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_material_flashcards",
+  "info": {
+    "displayName": "Flashcard"
+  },
+  "options": {},
+  "attributes": {
+    "pregunta": {
+      "type": "string"
+    },
+    "resposta": {
+      "type": "text"
+    }
+  },
+  "config": {}
+}

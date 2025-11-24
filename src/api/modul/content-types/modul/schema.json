@@ -30,6 +30,18 @@
       "type": "component",
       "component": "quiz.pregunta",
       "repeatable": true
+    },
+    "material_pdf": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "targetes_memoria": {
+      "type": "component",
+      "component": "material.flashcard",
+      "repeatable": true
     }
   }
 }
