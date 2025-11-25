@@ -33,7 +33,7 @@
     },
     "material_pdf": {
       "type": "media",
-      "multiple": false,
+      "multiple": true,
       "allowedTypes": [
         "files"
       ]
