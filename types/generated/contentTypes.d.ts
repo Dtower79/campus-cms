@@ -621,7 +621,7 @@ export interface ApiModulModul extends Struct.CollectionTypeSchema {
     ordre: Schema.Attribute.Integer;
     preguntes: Schema.Attribute.Component<'quiz.pregunta', true>;
     publishedAt: Schema.Attribute.DateTime;
-    resum: Schema.Attribute.Text;
+    resum: Schema.Attribute.Blocks;
     targetes_memoria: Schema.Attribute.Component<'material.flashcard', true>;
     titol: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;

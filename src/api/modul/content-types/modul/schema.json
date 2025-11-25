@@ -15,7 +15,7 @@
       "type": "string"
     },
     "resum": {
-      "type": "text"
+      "type": "blocks"
     },
     "ordre": {
       "type": "integer"
