@@ -48,6 +48,11 @@
       "relation": "oneToMany",
       "target": "api::matricula.matricula",
       "mappedBy": "curs"
+    },
+    "examen_final": {
+      "type": "component",
+      "component": "quiz.pregunta",
+      "repeatable": true
     }
   }
 }

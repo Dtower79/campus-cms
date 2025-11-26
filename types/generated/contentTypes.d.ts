@@ -544,6 +544,7 @@ export interface ApiCursCurs extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     descripcio: Schema.Attribute.Blocks;
     etiqueta: Schema.Attribute.String;
+    examen_final: Schema.Attribute.Component<'quiz.pregunta', true>;
     hores: Schema.Attribute.String;
     imatge: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
