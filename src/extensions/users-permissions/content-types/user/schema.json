@@ -83,6 +83,10 @@
     },
     "apellidos": {
       "type": "string"
+    },
+    "es_professor": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
