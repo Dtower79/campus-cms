@@ -53,6 +53,9 @@
       "type": "component",
       "component": "quiz.pregunta",
       "repeatable": true
+    },
+    "fecha_inicio": {
+      "type": "date"
     }
   }
 }
