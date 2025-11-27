@@ -590,6 +590,7 @@ export interface ApiMatriculaMatricula extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     nota_final: Schema.Attribute.Decimal;
     progres: Schema.Attribute.Integer;
+    progres_detallat: Schema.Attribute.JSON;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
