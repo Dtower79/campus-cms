@@ -604,6 +604,39 @@ export interface ApiMatriculaMatricula extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiMissatgeMissatge extends Struct.CollectionTypeSchema {
+  collectionName: 'missatges';
+  info: {
+    displayName: 'Missatge';
+    pluralName: 'missatges';
+    singularName: 'missatge';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    alumne_nom: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    curs: Schema.Attribute.String;
+    data_envio: Schema.Attribute.DateTime;
+    estat: Schema.Attribute.Enumeration<['pendent', 'respost']>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::missatge.missatge'
+    > &
+      Schema.Attribute.Private;
+    missatge: Schema.Attribute.Text;
+    publishedAt: Schema.Attribute.DateTime;
+    resposta_professor: Schema.Attribute.Text;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiModulModul extends Struct.CollectionTypeSchema {
   collectionName: 'moduls';
   info: {
@@ -1193,6 +1226,7 @@ declare module '@strapi/strapi' {
       'api::afiliado.afiliado': ApiAfiliadoAfiliado;
       'api::curs.curs': ApiCursCurs;
       'api::matricula.matricula': ApiMatriculaMatricula;
+      'api::missatge.missatge': ApiMissatgeMissatge;
       'api::modul.modul': ApiModulModul;
       'api::notificacion.notificacion': ApiNotificacionNotificacion;
       'plugin::content-releases.release': PluginContentReleasesRelease;

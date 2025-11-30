@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "missatges",
+  "info": {
+    "singularName": "missatge",
+    "pluralName": "missatges",
+    "displayName": "Missatge"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "missatge": {
+      "type": "text"
+    },
+    "curs": {
+      "type": "string"
+    },
+    "alumne_nom": {
+      "type": "string"
+    },
+    "estat": {
+      "type": "enumeration",
+      "enum": [
+        "pendent",
+        "respost"
+      ]
+    },
+    "resposta_professor": {
+      "type": "text"
+    },
+    "data_envio": {
+      "type": "datetime"
+    }
+  }
+}
