@@ -542,10 +542,12 @@ export interface ApiCursCurs extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    data_fi: Schema.Attribute.Date;
     descripcio: Schema.Attribute.Blocks;
     etiqueta: Schema.Attribute.String;
     examen_final: Schema.Attribute.Component<'quiz.pregunta', true>;
     fecha_inicio: Schema.Attribute.Date;
+    glossari: Schema.Attribute.Blocks;
     hores: Schema.Attribute.String;
     imatge: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;

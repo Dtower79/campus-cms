@@ -56,6 +56,12 @@
     },
     "fecha_inicio": {
       "type": "date"
+    },
+    "glossari": {
+      "type": "blocks"
+    },
+    "data_fi": {
+      "type": "date"
     }
   }
 }
