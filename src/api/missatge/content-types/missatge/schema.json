@@ -38,6 +38,9 @@
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "missatges"
+    },
+    "tema": {
+      "type": "string"
     }
   }
 }

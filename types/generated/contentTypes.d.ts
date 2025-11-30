@@ -631,6 +631,7 @@ export interface ApiMissatgeMissatge extends Struct.CollectionTypeSchema {
     missatge: Schema.Attribute.Text;
     publishedAt: Schema.Attribute.DateTime;
     resposta_professor: Schema.Attribute.Text;
+    tema: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
