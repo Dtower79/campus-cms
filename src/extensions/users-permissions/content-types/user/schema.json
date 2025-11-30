@@ -87,6 +87,12 @@
     "es_professor": {
       "type": "boolean",
       "default": false
+    },
+    "missatges": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::missatge.missatge",
+      "mappedBy": "users_permissions_user"
     }
   }
 }

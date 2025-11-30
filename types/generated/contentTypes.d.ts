@@ -634,6 +634,10 @@ export interface ApiMissatgeMissatge extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -1183,6 +1187,7 @@ export interface PluginUsersPermissionsUser
       'oneToMany',
       'api::matricula.matricula'
     >;
+    missatges: Schema.Attribute.Relation<'oneToMany', 'api::missatge.missatge'>;
     nombre: Schema.Attribute.String;
     notificacions: Schema.Attribute.Relation<
       'oneToMany',

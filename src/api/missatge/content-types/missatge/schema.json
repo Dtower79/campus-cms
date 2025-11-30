@@ -32,6 +32,12 @@
     },
     "data_envio": {
       "type": "datetime"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "missatges"
     }
   }
 }
