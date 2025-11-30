@@ -1,14 +1,13 @@
-module.exports = {
+export default {
   async afterCreate(event) {
-    // 1. CHIVATO: Si esto no sale en el log, es que Strapi no lee el archivo
-    console.log('🚀 INTENTANDO ENVIAR A TELEGRAM...'); 
+    // CHIVATO: Si esto no sale en el log, es que Strapi no lee el archivo
+    console.log('🚀 INTENTANDO ENVIAR A TELEGRAM (TS)...'); 
 
     const { result } = event;
 
-    // --- CORRECCIÓN AQUÍ: COMILLAS OBLIGATORIAS ---
+    // TUS DATOS
     const BOT_TOKEN = '8387797885:AAGU2aU_-rjXDqn7cqecPmn0qE7ke2dbJWI'; 
     const CHAT_ID = '818012851'; 
-    // ----------------------------------------------
 
     try {
       const texto = `
@@ -23,7 +22,7 @@ module.exports = {
 _Entra al Campus per respondre._
       `;
 
-      // Enviamos a Telegram
+      // Enviamos a Telegram (fetch funciona nativo en Node 18+)
       const respuesta = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -34,7 +33,6 @@ _Entra al Campus per respondre._
         })
       });
       
-      // Verificamos si Telegram nos ha dicho que sí o que no
       if (respuesta.ok) {
           console.log('✅ TELEGRAM: Notificación enviada correctamente.');
       } else {
