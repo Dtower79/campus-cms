@@ -1,15 +1,21 @@
 export default {
   async afterCreate(event) {
-    // CHIVATO: Si esto no sale en el log, es que Strapi no lee el archivo
-    console.log('🚀 INTENTANDO ENVIAR A TELEGRAM (TS)...'); 
-
     const { result } = event;
+
+    // --- 1. PROTECCIÓN CONTRA DUPLICADOS ---
+    // Si la bandera ya está en true, significa que ya enviamos el mensaje.
+    // Paramos aquí para no enviarlo otra vez.
+    if (result.telegram_enviado === true) {
+        return;
+    }
 
     // TUS DATOS
     const BOT_TOKEN = '8387797885:AAGU2aU_-rjXDqn7cqecPmn0qE7ke2dbJWI'; 
     const CHAT_ID = '818012851'; 
 
     try {
+      console.log('🚀 INTENTANDO ENVIAR A TELEGRAM...'); 
+
       const texto = `
 📢 *NOU DUBTE AL CAMPUS*
 -------------------------
@@ -22,7 +28,7 @@ export default {
 _Entra al Campus per respondre._
       `;
 
-      // Enviamos a Telegram (fetch funciona nativo en Node 18+)
+      // Enviamos a Telegram
       const respuesta = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -35,6 +41,14 @@ _Entra al Campus per respondre._
       
       if (respuesta.ok) {
           console.log('✅ TELEGRAM: Notificación enviada correctamente.');
+          
+          // --- 2. MARCAR COMO ENVIADO EN LA BASE DE DATOS ---
+          // Usamos strapi.db.query para actualizar "en silencio" y evitar bucles infinitos
+          await strapi.db.query('api::missatge.missatge').update({
+            where: { id: result.id },
+            data: { telegram_enviado: true }
+          });
+
       } else {
           const errorData = await respuesta.text();
           console.error('❌ TELEGRAM ERROR:', errorData);

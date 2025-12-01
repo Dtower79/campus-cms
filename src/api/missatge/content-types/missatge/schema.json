@@ -41,6 +41,10 @@
     },
     "tema": {
       "type": "string"
+    },
+    "telegram_enviado": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
