@@ -675,6 +675,40 @@ export interface ApiModulModul extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiNotificacioNotificacio extends Struct.CollectionTypeSchema {
+  collectionName: 'notificaciones';
+  info: {
+    displayName: 'Notificaciones';
+    pluralName: 'notificaciones';
+    singularName: 'notificacio';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    llegida: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::notificacio.notificacio'
+    > &
+      Schema.Attribute.Private;
+    missatge: Schema.Attribute.Text;
+    publishedAt: Schema.Attribute.DateTime;
+    titol: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    users_permissions_user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
 export interface ApiNotificacionNotificacion
   extends Struct.CollectionTypeSchema {
   collectionName: 'notificacions';
@@ -1236,6 +1270,7 @@ declare module '@strapi/strapi' {
       'api::matricula.matricula': ApiMatriculaMatricula;
       'api::missatge.missatge': ApiMissatgeMissatge;
       'api::modul.modul': ApiModulModul;
+      'api::notificacio.notificacio': ApiNotificacioNotificacio;
       'api::notificacion.notificacion': ApiNotificacionNotificacion;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
