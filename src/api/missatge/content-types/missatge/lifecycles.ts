@@ -2,25 +2,28 @@ import axios from 'axios';
 
 export default {
   async afterCreate(event) {
-    // 1. Cogemos los datos del mensaje que acaba de llegar
     const { result } = event;
 
-    // 2. Leemos las claves del archivo .env
+    // --- CONDICIÓN DE SEGURIDAD ---
+    // Si el mensaje no está "pendent" (ej: está "respost" o se está editando), NO enviamos nada.
+    // Esto evita que salte el aviso cuando el profesor responde.
+    if (result.estat && result.estat !== 'pendent') {
+      return;
+    }
+    // ------------------------------
+
     const token = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
 
-    // Si no están configuradas, paramos para no dar error
     if (!token || !chatId) return;
 
     try {
-      // 3. Calculamos la hora actual de España
       const fechaHora = new Date().toLocaleString('es-ES', { 
         timeZone: 'Europe/Madrid',
         day: '2-digit', month: '2-digit', year: 'numeric',
         hour: '2-digit', minute: '2-digit'
       });
 
-      // 4. Diseñamos el mensaje bonito para Telegram
       const textoTelegram = `
 🔔 *NOU DUBTE AL CAMPUS*
 📅 ${fechaHora}
@@ -33,17 +36,22 @@ export default {
 ${result.missatge}
       `;
 
-      // 5. ¡Enviamos el mensaje!
       await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
         chat_id: chatId,
         text: textoTelegram,
         parse_mode: 'Markdown'
       });
 
-      console.log('✅ Avís enviat a Telegram correctament.');
+      console.log('✅ Aviso enviado a Telegram correctamente.');
 
     } catch (error) {
-      console.log('❌ Error enviant a Telegram:', error);
+      console.log('❌ Error enviando a Telegram:', error);
     }
   },
+  
+  // Aseguramos que NO haya lógica en afterUpdate
+  async afterUpdate(event) {
+    // Dejamos esto vacío para asegurar que no se envía nada al editar/responder
+    return;
+  }
 };
