@@ -1,17 +1,25 @@
 import axios from 'axios';
 
 export default {
+  // HOOK DE CREACIÓN (Solo aquí enviamos Telegram)
   async afterCreate(event) {
     const { result } = event;
 
-    // --- CONDICIÓN DE SEGURIDAD ---
-    // Si el mensaje no está "pendent" (ej: está "respost" o se está editando), NO enviamos nada.
-    // Esto evita que salte el aviso cuando el profesor responde.
+    // --- CANDADO 1: ESTADO ---
+    // Si el mensaje NO está en estado 'pendent' (ej: 'respost'), abortamos inmediatamente.
     if (result.estat && result.estat !== 'pendent') {
+      console.log(`⛔ Telegram bloqueado: El mensaje ${result.id} no está pendiente.`);
       return;
     }
-    // ------------------------------
 
+    // --- CANDADO 2: RESPUESTA ---
+    // Si el mensaje ya tiene texto de respuesta, abortamos.
+    if (result.resposta_professor && result.resposta_professor.length > 0) {
+      console.log(`⛔ Telegram bloqueado: El mensaje ${result.id} ya tiene respuesta.`);
+      return;
+    }
+
+    // Si pasa los candados, procedemos al envío
     const token = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
 
@@ -42,16 +50,15 @@ ${result.missatge}
         parse_mode: 'Markdown'
       });
 
-      console.log('✅ Aviso enviado a Telegram correctamente.');
-
     } catch (error) {
       console.log('❌ Error enviando a Telegram:', error);
     }
   },
-  
-  // Aseguramos que NO haya lógica en afterUpdate
+
+  // HOOK DE ACTUALIZACIÓN (Cuando respondes)
+  // Lo definimos explícitamente VACÍO para asegurar que Strapi no haga nada aquí.
   async afterUpdate(event) {
-    // Dejamos esto vacío para asegurar que no se envía nada al editar/responder
+    // SILENCIO ABSOLUTO AL EDITAR/RESPONDER
     return;
   }
 };
