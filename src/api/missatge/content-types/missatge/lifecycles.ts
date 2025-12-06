@@ -1,61 +1,49 @@
+import axios from 'axios';
+
 export default {
   async afterCreate(event) {
+    // 1. Cogemos los datos del mensaje que acaba de llegar
     const { result } = event;
 
-    // --- 1. PROTECCIÓN CONTRA DUPLICADOS ---
-    // Si la bandera ya está en true, significa que ya enviamos el mensaje.
-    // Paramos aquí para no enviarlo otra vez.
-    if (result.telegram_enviado === true) {
-        return;
-    }
+    // 2. Leemos las claves del archivo .env
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    const chatId = process.env.TELEGRAM_CHAT_ID;
 
-    // TUS DATOS
-    const BOT_TOKEN = '8387797885:AAGU2aU_-rjXDqn7cqecPmn0qE7ke2dbJWI'; 
-    const CHAT_ID = '818012851'; 
+    // Si no están configuradas, paramos para no dar error
+    if (!token || !chatId) return;
 
     try {
-      console.log('🚀 INTENTANDO ENVIAR A TELEGRAM...'); 
+      // 3. Calculamos la hora actual de España
+      const fechaHora = new Date().toLocaleString('es-ES', { 
+        timeZone: 'Europe/Madrid',
+        day: '2-digit', month: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      });
 
-      const texto = `
-📢 *NOU DUBTE AL CAMPUS*
--------------------------
-👤 *Alumne:* ${result.alumne_nom || 'Anònim'}
+      // 4. Diseñamos el mensaje bonito para Telegram
+      const textoTelegram = `
+🔔 *NOU DUBTE AL CAMPUS*
+📅 ${fechaHora}
+
+👤 *Alumne:* ${result.alumne_nom || 'Sense nom'}
 📘 *Curs:* ${result.curs || 'General'}
-🏷️ *Tema:* ${result.tema || 'Sense tema'}
-📝 *Missatge:*
-"${result.missatge}"
--------------------------
-_Entra al Campus per respondre._
+🏷 *Tema:* ${result.tema || 'Sense tema'}
+
+💬 *Missatge:*
+${result.missatge}
       `;
 
-      // Enviamos a Telegram
-      const respuesta = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: CHAT_ID,
-          text: texto,
-          parse_mode: 'Markdown'
-        })
+      // 5. ¡Enviamos el mensaje!
+      await axios.post(`https://api.telegram.org/bot${token}/sendMessage`, {
+        chat_id: chatId,
+        text: textoTelegram,
+        parse_mode: 'Markdown'
       });
-      
-      if (respuesta.ok) {
-          console.log('✅ TELEGRAM: Notificación enviada correctamente.');
-          
-          // --- 2. MARCAR COMO ENVIADO EN LA BASE DE DATOS ---
-          // Usamos strapi.db.query para actualizar "en silencio" y evitar bucles infinitos
-          await strapi.db.query('api::missatge.missatge').update({
-            where: { id: result.id },
-            data: { telegram_enviado: true }
-          });
 
-      } else {
-          const errorData = await respuesta.text();
-          console.error('❌ TELEGRAM ERROR:', errorData);
-      }
+      console.log('✅ Aviso enviado a Telegram correctamente.');
 
-    } catch (err) {
-      console.error('❌ ERROR CRÍTICO AL CONECTAR CON TELEGRAM:', err);
+    } catch (error) {
+      console.log('❌ Error enviando a Telegram:', error);
     }
-  }
+  },
 };
