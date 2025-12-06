@@ -40,10 +40,10 @@ ${result.missatge}
         parse_mode: 'Markdown'
       });
 
-      console.log('✅ Aviso enviado a Telegram correctamente.');
+      console.log('✅ Avís enviat a Telegram correctament.');
 
     } catch (error) {
-      console.log('❌ Error enviando a Telegram:', error);
+      console.log('❌ Error enviant a Telegram:', error);
     }
   },
 };
