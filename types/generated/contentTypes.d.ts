@@ -575,7 +575,7 @@ export interface ApiMatriculaMatricula extends Struct.CollectionTypeSchema {
     singularName: 'matricula';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
@@ -612,7 +612,7 @@ export interface ApiMissatgeMissatge extends Struct.CollectionTypeSchema {
     singularName: 'missatge';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     alumne_nom: Schema.Attribute.String;
