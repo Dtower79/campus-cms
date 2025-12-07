@@ -28,6 +28,8 @@ export interface QuizPregunta extends Struct.ComponentSchema {
     displayName: 'Pregunta';
   };
   attributes: {
+    es_multiresposta: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
     explicacio: Schema.Attribute.Blocks;
     opcions: Schema.Attribute.Component<'quiz.opcio', true>;
     text: Schema.Attribute.String;

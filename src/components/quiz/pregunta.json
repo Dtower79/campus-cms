@@ -15,6 +15,10 @@
       "type": "component",
       "component": "quiz.opcio",
       "repeatable": true
+    },
+    "es_multiresposta": {
+      "type": "boolean",
+      "default": false
     }
   },
   "config": {}

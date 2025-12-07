@@ -55,6 +55,11 @@
     },
     "video_url": {
       "type": "string"
+    },
+    "banc_preguntes": {
+      "type": "component",
+      "component": "quiz.pregunta",
+      "repeatable": true
     }
   }
 }

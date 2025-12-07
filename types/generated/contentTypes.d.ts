@@ -655,6 +655,7 @@ export interface ApiModulModul extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    banc_preguntes: Schema.Attribute.Component<'quiz.pregunta', true>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
