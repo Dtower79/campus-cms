@@ -42,6 +42,19 @@
       "type": "component",
       "component": "material.flashcard",
       "repeatable": true
+    },
+    "video_fitxer": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "video_url": {
+      "type": "string"
     }
   }
 }
