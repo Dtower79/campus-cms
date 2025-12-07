@@ -683,7 +683,7 @@ export interface ApiNotificacioNotificacio extends Struct.CollectionTypeSchema {
     singularName: 'notificacio';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
@@ -718,7 +718,7 @@ export interface ApiNotificacionNotificacion
     singularName: 'notificacion';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
