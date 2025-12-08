@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SICAP Campus Virtual</title>
+    
+    <!-- FUENTES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- ESTILOS (Versión final) -->
+    <link rel="stylesheet" href="css/estil.css?v=33.0">
+    <link rel="icon" href="img/favicon.png" type="image/png">
+    
+    <!-- ESTILO ESPECÍFICO TABLA COOKIES -->
+    <style>
+        .cookie-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 10px; }
+        .cookie-table th, .cookie-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .cookie-table th { background-color: #f2f2f2; color: #333; font-weight: bold; }
+        [data-theme="dark"] .cookie-table th { background-color: #333; color: #fff; border-color: #444; }
+        [data-theme="dark"] .cookie-table td { border-color: #444; }
+    </style>
+</head>
+<body>
+
+    <!-- =========================
+         1. LOGIN & REGISTRO
+         ========================= -->
+    <div id="login-overlay" class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <img src="img/logo-sicap.png" alt="SICAP Logo" class="login-logo">
+            </div>
+            
+            <div id="login-error-msg" class="login-error" style="display: none;"></div>
+
+            <!-- 1. LOGIN -->
+            <div id="login-view">
+                <form id="login-form">
+                    <div class="input-group">
+                        <input type="text" id="login-dni" placeholder="DNI / NIF" required autocomplete="username" maxlength="9" style="text-transform:uppercase;">
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="login-pass" placeholder="Contrasenya" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn-login">Inicia la sessió</button>
+                </form>
+                <div class="login-footer"><a href="#" id="btn-forgot-pass">Heu oblidat la contrasenya?</a></div>
+                <div class="register-section">
+                    <p>Ets afiliat i és la teva primera vegada?</p>
+                    <button id="btn-show-register" class="btn-secondary">Registra't aquí</button>
+                </div>
+            </div>
+
+            <!-- 2. REGISTRO (Solo pide DNI y Password) -->
+            <div id="register-view" style="display: none;">
+                <h3 style="color:var(--brand-blue); margin-bottom:15px;">Activació de Compte</h3>
+                <p style="font-size:0.9rem; color:#666; margin-bottom:20px;">
+                    Introdueix el teu DNI. El sistema et validarà i vincularà el teu correu d'afiliat automàticament.
+                </p>
+                <form id="register-form">
+                    <div class="input-group">
+                        <input type="text" id="reg-dni" placeholder="El teu DNI" required autocomplete="username" maxlength="9" style="text-transform:uppercase;">
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="reg-pass" placeholder="Crea una contrasenya" required autocomplete="new-password">
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="reg-pass-conf" placeholder="Repeteix la contrasenya" required autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="btn-login" style="background-color: var(--brand-red) !important;">Validar i Activar</button>
+                </form>
+                <div style="margin-top: 20px;"><button class="btn-back-login btn-secondary" style="border:none !important; text-decoration:underline;">Tornar al Login</button></div>
+            </div>
+
+            <!-- 3. RECUPERACIÓN (Solo pide DNI) -->
+            <div id="forgot-view" style="display: none;">
+                <h3 style="color:var(--brand-blue); margin-bottom:15px;">Recuperar Contrasenya</h3>
+                <p style="font-size:0.9rem; color:#666; margin-bottom:20px;">
+                    Introdueix el teu DNI. Enviarem un enllaç de recuperació al correu electrònic que consta a la teva fitxa d'afiliat.
+                </p>
+                <form id="forgot-form">
+                    <div class="input-group">
+                        <input type="text" id="forgot-dni" placeholder="El teu DNI" required style="text-transform:uppercase;" maxlength="9">
+                    </div>
+                    <button type="submit" class="btn-login">Enviar Enllaç</button>
+                </form>
+                <div style="margin-top: 20px;"><button class="btn-back-login btn-secondary" style="border:none !important; text-decoration:underline;">Tornar al Login</button></div>
+            </div>
+
+            <!-- 4. RESET (Se activa desde el correo) -->
+            <div id="reset-view" style="display: none;">
+                <h3 style="color:var(--brand-blue); margin-bottom:15px;">Nova Contrasenya</h3>
+                <form id="reset-form">
+                    <input type="hidden" id="reset-code">
+                    <div class="input-group"><input type="password" id="reset-pass" placeholder="Nova contrasenya" required></div>
+                    <div class="input-group"><input type="password" id="reset-pass-conf" placeholder="Repeteix la contrasenya" required></div>
+                    <button type="submit" class="btn-login" style="background-color: var(--brand-red) !important;">Guardar Canvis</button>
+                </form>
+            </div>
+
+            <div class="cookie-notice"><small>Avís de galetes: Utilitzem galetes pròpies per gestionar la sessió.</small></div>
+        </div>
+    </div>
+
+    <!-- =========================
+         2. APP PRINCIPAL
+         ========================= -->
+    <div id="app-container" style="display: none;">
+        
+        <header class="main-header">
+            <div class="header-content">
+                <!-- ZONA IZQUIERDA -->
+                <div class="header-left-group">
+                    <button id="mobile-menu-btn" class="mobile-menu-btn">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+        
+                    <img src="img/logo-sicap.png" alt="SICAP Campus" class="header-logo">
+        
+                    <nav class="header-nav" id="main-nav">
+                        <a href="#" id="nav-catalog" class="nav-link">Pàgina Principal</a>
+                        <a href="#" id="nav-profile" class="nav-link">Àrea personal</a>
+                        <a href="#" id="nav-dashboard" class="nav-link active">Els meus cursos</a>
+                    </nav>
+                </div>
+        
+                <!-- ZONA DERECHA -->
+                <div class="header-right">
+                    <button id="theme-toggle" class="btn-icon" title="Canviar Tema"><i class="fa-solid fa-moon"></i></button>
+                    <div class="icon-wrapper" id="btn-notifs"><i class="fa-regular fa-bell"></i><span class="notification-dot"></span></div>
+                    <div class="icon-wrapper" id="btn-messages"><i class="fa-regular fa-comment"></i></div>
+        
+                    <div class="header-divider"></div>
+        
+                    <div class="user-profile-container" id="user-menu-trigger">
+                        <div class="user-avatar-circle" id="user-initials">US</div>
+                        <i class="fa-solid fa-chevron-down desktop-arrow" style="font-size: 0.8rem; color: #666; margin-left: 5px;"></i>
+                        
+                        <div class="user-dropdown" id="user-dropdown-menu">
+                            <div class="dropdown-header">
+                                <strong id="dropdown-username">Usuari</strong>
+                                <small id="dropdown-email">email@test.com</small>
+                            </div>
+                            <ul>
+                                <li><a href="#" data-action="profile"><i class="fa-regular fa-user"></i> Perfil</a></li>
+                                <li><a href="#" data-action="grades"><i class="fa-solid fa-chart-bar"></i> Qualificacions</a></li>
+                                <li class="divider" style="border-bottom:1px solid #eee; margin:5px 0;"></li>
+                                <li><a href="#" id="btn-logout-dropdown" style="color:var(--brand-red);"><i class="fa-solid fa-power-off"></i> Sortir</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- VISTAS -->
+        <div id="dashboard-view" class="container-dashboard">
+            <div class="dashboard-card">
+                <h1>Els meus Cursos</h1>
+                <div id="courses-list" class="courses-grid"></div>
+            </div>
+        </div>
+
+        <div id="catalog-view" class="container-dashboard" style="display: none;">
+            <div class="dashboard-card">
+                <h1>Catàleg de Formació</h1>
+                <p style="color:var(--text-secondary); margin-bottom:20px;">Tots els cursos disponibles al sindicat.</p>
+                <div id="catalog-list" class="courses-grid"></div>
+            </div>
+        </div>
+
+        <div id="profile-view" class="container-dashboard" style="display: none;">
+            <div class="dashboard-card">
+                <h1 style="border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px;">La meva Fitxa d'Afiliat</h1>
+                <div class="profile-grid-layout">
+                    <div class="profile-sidebar-card">
+                        <div class="user-avatar-big" id="profile-avatar-big">US</div>
+                        <h3 id="profile-name-display">Carregant...</h3>
+                        <span class="badge-role">Afiliat Actiu</span>
+                        <p style="font-size:0.9rem; color:#666; margin-top:10px;">DNI: <span id="profile-dni-display">...</span></p>
+                        <div id="profile-stats-container" class="profile-stats-box" style="display:none;">
+                            <div class="stat-row">
+                                <span><i class="fa-solid fa-graduation-cap"></i> Cursos Iniciats:</span>
+                                <strong id="stat-started">0</strong>
+                            </div>
+                            <div class="stat-row">
+                                <span><i class="fa-solid fa-check-circle"></i> Completats:</span>
+                                <strong id="stat-finished">0</strong>
+                            </div>
+                            <div class="stat-divider"></div>
+                            <div class="stat-row">
+                                <span><i class="fa-regular fa-clock"></i> Hores Totals:</span>
+                                <strong id="stat-hours">0h</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-data-form">
+                        <div class="form-grid-2">
+                            <div class="input-group"><label>Telèfon Mòbil</label><input type="text" id="prof-movil" disabled></div>
+                            <div class="input-group"><label>Email</label><input type="text" id="prof-email" disabled></div>
+                            <div class="input-group"><label>Província</label><input type="text" id="prof-prov" disabled></div>
+                            <div class="input-group"><label>Població</label><input type="text" id="prof-pob" disabled></div>
+                            <div class="input-group"><label>Centre de Treball</label><input type="text" id="prof-centre" disabled></div>
+                            <div class="input-group"><label>Categoria</label><input type="text" id="prof-cat" disabled></div>
+                            <div class="input-group span-2"><label>Adreça Completa</label><input type="text" id="prof-dir" disabled></div>
+                            <div class="input-group span-2"><label>IBAN</label><input type="text" id="prof-iban" disabled></div>
+                        </div>
+                        <div class="alert-info" style="margin-top:20px; background:var(--quiz-question-bg); padding:15px; border-radius:6px; font-size:0.9rem; border:1px solid var(--border-color);">
+                            <i class="fa-solid fa-circle-info"></i> <strong>Nota:</strong> Per seguretat, les dades personals es gestionen des de secretaria.
+                        </div>
+                        <button class="btn-primary" onclick="window.location.href='mailto:secretaria@sicap.cat'" style="width:auto; margin-top:15px;">Sol·licitar canvi de dades</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="grades-view" class="container-dashboard" style="display: none;">
+            <div class="dashboard-card">
+                <h1>Qualificacions</h1>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--brand-blue); text-align: left;">
+                            <th style="padding: 10px;">Curs</th><th style="padding: 10px;">Estat</th><th style="padding: 10px;">Nota</th><th style="padding: 10px;">Diploma</th>
+                        </tr>
+                    </thead>
+                    <tbody id="grades-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- VISTA EXAMEN -->
+        <div id="exam-view" class="app-container" style="display: none;">
+            <aside class="sidebar-left">
+                <div class="sidebar-header"><h3>Índex del Curs</h3></div>
+                <div id="course-index"></div>
+                <div style="margin-top:20px;">
+                    <a href="#" onclick="window.tornarAlDashboard(); return false;" class="btn-small">
+                        <i class="fa-solid fa-arrow-left"></i> Tornar als Cursos
+                    </a>
+                </div>
+            </aside>
+            <main class="main-content">
+                <div class="exam-card">
+                    <h2 id="curs-titol">Carregant curs...</h2>
+                    <div id="moduls-container">
+                        <div class="loader"></div>
+                        <p class="loading-text">Carregant contingut...</p>
+                    </div>
+                </div>
+            </main>
+            <aside class="sidebar-right">
+                <div class="sidebar-header"><h3>Navegació</h3></div>
+                <div id="quiz-grid" class="grid-container"></div>
+                <div id="final-score-card" style="display: none;"></div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- =========================
+         FOOTER (3 COLUMNAS)
+         ========================= -->
+    <footer class="main-footer" style="display: none;" id="app-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="img/logo-sicap.png" alt="SICAP Logo">
+                <p>&copy; 2025 SICAP. Tots els drets reservats.</p>
+                <p>Carrer Malats, 27 | 08030 Barcelona</p>
+            </div>
+
+            <div class="footer-links">
+                <a href="#" onclick="document.getElementById('modal-avis').style.display='flex'; return false;">Avís Legal</a>
+                <span>|</span>
+                <a href="#" onclick="document.getElementById('modal-privacitat').style.display='flex'; return false;">Política de Privacitat</a>
+                <span>|</span>
+                <a href="#" onclick="document.getElementById('modal-cookies').style.display='flex'; return false;">Política de Cookies</a>
+                <span>|</span>
+                <a href="mailto:sicap@sicap.cat">Contacte</a>
+            </div>
+
+            <div class="footer-social">
+                <a href="https://sicap.cat" target="_blank" title="Web Oficial SICAP">
+                    <i class="fa-solid fa-globe"></i> sicap.cat
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =========================
+         MODALES LEGALES (TEXTOS COMPLETOS)
+         ========================= -->
+
+    <!-- 1. MODAL AVÍS LEGAL -->
+    <div id="modal-avis" class="modal-overlay" style="display: none;">
+        <div class="modal-card" style="max-width: 800px; text-align: left;">
+            <h3 style="color:var(--brand-blue); border-bottom:1px solid #eee; padding-bottom:10px;">Avís Legal</h3>
+            <div class="legal-text-content">
+                <h4>1. Titularitat</h4>
+                <p>Aquest portal d'Internet és titularitat de <strong>SINDICAT CATALÀ DE PRESONS (SICAP)</strong>.<br>
+                CIF G22580633.<br>
+                Domicili: carrer Malats, 27, 08030 Barcelona.<br>
+                Tel. 933 426 810.<br>
+                Fax 933 426 811.<br>
+                E-mail: sicap@sicap.cat</p>
+
+                <h4>2. Objectiu</h4>
+                <p>Aquest document té per objecte regular l'ús del web que SICAP posa a disposició del públic. La utilització del web per un tercer li atribueix la condició d'usuari, i suposa l'acceptació plena de l'usuari de totes i cada una de les condicions que estableix aquest Avís legal.</p>
+
+                <h4>3. Ús correcte de la pàgina web</h4>
+                <p>L'accés a aquest portal implica acceptar i conèixer les condicions i termes d'aquest Avís legal, i no pot utilitzar aquesta pàgina web o serveis prestats a través d'ells, per finalitats contràries a la llei o amb vulneració del que disposa la legislació vigent, aquest Avís legal, bons costums i ordre públic, o per qualsevol altra que pugui causar una lesió als drets de tercers.</p>
+                <p>L'usuari no podrà destruir, alterar, inutilitzar o, de qualsevol altra forma, fer malbé les dades, els programes o els documents electrònics i altres que es trobin en el web, així com a no obstaculitzar l'accés d'altres usuaris al servei d'accés ni introduir-hi programes, aplicacions informàtiques, virus, o qualsevol altre dispositiu anàleg que puguin causar qualsevol tipus d'alteració en els sistemes informàtics de SICAP o de tercers.</p>
+                <p>L'usuari no podrà fer mal ús de les informacions, missatges, gràfics, arxius ni de qualsevol classe de material accessible a través d'aquesta web.</p>
+
+                <h4>4. Propietat intel·lectual i industrial</h4>
+                <p>Aquest web i els seus continguts són propietat de SICAP o de tercers que l'han autoritzada per al seu ús.</p>
+                <p>En cas que algun contingut sigui titularitat d'un tercer, es farà figurar la font i el seu autor, sempre respectant els seus drets sobre la mateixa.</p>
+                <p>Així mateix, aquest portal conté documents de caràcter legal, dels que no garantim que siguin reproduccions exactes i/o actualitzades.</p>
+                <p>L'accés a aquesta pàgina web no suposa adquisició de cap tipus a l'usuari sobre els continguts de la mateixa.</p>
+                <p>Es prohibeix la reproducció, distribució, comunicació pública, posada a disposició, transformació i transmissió dels continguts del portal, excepte autorització expressa del titular dels drets. No obstant, l'usuari podrà fer una còpia dels continguts en el seu sistema informàtic, sempre que sigui pel seu ús personal i sense fi comercial.</p>
+
+                <h4>5. Accés a la web</h4>
+                <p>L'accés a aquest web està subjecte a les condicions següents:</p>
+                <p>SICAP no és responsable de la informació que es pot obtenir a través d'enllaços o links a sistemes externs. Així mateix, no es podrà establir enllaços o links des d'altres pàgines web de tercers al portal de SICAP, excepte que aquesta expressament s'ho autoritzi, sigui del mateix sector o tingui relació amb l’entitat externa.</p>
+                <p>SICAP no garanteix que el web i el servidor estiguin lliures de virus i no es fa responsable dels danys causats per l'accés al web o per la impossibilitat d'accedir- hi.</p>
+
+                <h4>6. Responsabilitat</h4>
+                <p><strong>6.1 En l'accés a la pàgina web</strong><br>
+                SICAP podrà interrompre l'accés a la seva pàgina web, a fi de realitzar el seu manteniment, actualització, control o per qualsevol altra causa, i s'exonera de qualsevol responsabilitat que es pugui reclamar per aquesta causa. SICAP no garanteix l'absència de virus, cucs, o qualsevol element que pugui causar danys al sistema informàtic de l'usuari o tercers. Tampoc es responsabilitza dels danys o perjudicis que es puguin produir pel mal ús d'aquest web per part de l'usuari o tercers.</p>
+                
+                <p><strong>6.2 En els enllaços o links</strong><br>
+                SICAP pot contenir enllaços o links que permetin a l'usuari accedir a altres pàgines web. SICAP s'exonera de qualsevol responsabilitat sobre els continguts d'aquestes pàgines externes. No obstant, en cas que tingui coneixement de la il·licitud del seu contingut, o que aquestes lesionin bens o drets d'un tercer susceptibles d'indemnització, SICAP actuarà amb la diligència necessària a fi de suprimir l'enllaç corresponent.</p>
+                
+                <p><strong>6.3 En el funcionament de la pàgina web</strong><br>
+                Així mateix, SICAP s'exonera de qualsevol responsabilitat que es pogués derivar pel funcionament d'aquest portal, pel dany o pèrdua que s'esdevingués per motiu de la connexió, per interferències, omissions, interrupcions, virus informàtics, així com també dels danys causats per terceres persones per intromissions il·legítimes o qualsevol altra causa aliena fora del control de SICAP.</p>
+                
+                <p><strong>6.4 En la utilització de la pàgina web</strong><br>
+                SICAP no es fa responsable dels comentaris que els usuaris exposin en la web. En cas de detectar-ne comentaris ofensius o que puguin ser contraris a la legislació vigent, aquest Avís legal, bons costums i ordre públic, o per qualsevol altra que pugui causar una lesió als drets de tercers, SICAP es reserva el dret de moderació i eliminació immediata dels mateixos, amb les responsabilitats que es puguin derivar pel seu emissor.</p>
+                <p>L'usuari és l'únic responsable de les infraccions, danys i perjudicis, i en definitiva, per qualsevol reclamació o acció legal contra SICAP, quan siguin a causa de la utilització del web per l'usuari. Si és el cas, l'usuari assumirà totes les despeses, els costos i les indemnitzacions que es reclamin a SICAP amb motiu de reclamacions o d'accions legals.</p>
+
+                <h4>7. Legislació aplicable i competència judicial</h4>
+                <p>La interpretació i execució d'aquest Avís legal, així com les condicions d'accés a la pàgina web, està subjecte a la legislació espanyola. Per la resolució de qualsevol conflicte que pogués esdevenir-se entre SICAP i l'usuari, seran competents els Jutjats i Tribunals que disposi la llei processal aplicable en vigor.</p>
+            </div>
+            <div style="text-align: right; margin-top:15px;">
+                <button class="btn-primary" onclick="document.getElementById('modal-avis').style.display='none'" style="width:auto;">Tancar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MODAL POLÍTICA DE PRIVACITAT -->
+    <div id="modal-privacitat" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <h3 style="color:var(--brand-blue); border-bottom:1px solid #eee; padding-bottom:10px;">Política de Privacitat</h3>
+            <div class="legal-text-content">
+                <p>D'acord amb l'establert en el Reglament General de Protecció de Dades, en endavant RGPD (Reglament UE 2016/679 del Parlament Europeu i del Consell, de 27 de abril, relatiu a la protecció de les persones físiques en el que respecta al tractament de dades personals i a la lliure circulació d’aquestes dades) i la llei Orgànica 3/2018, de 5 de desembre, de Protecció de Dades Personals i Garantia dels Drets Digitals, en endavant LOPDGDD, des de SINDICAT CATALÀ DE PRESONS (SICAP) li informem que les dades personals de totes les persones en general que pugui guardar alguna relació amb aquesta entitat, són tractades per les finalitats i base jurídica que legitima el seu tractament, amb estricte compliment amb les normes vigents en matèria de protecció de dades.</p>
+                <p>El fet de proporcionar dades a través de formularis per la pàgina web o per correu electrònic, implica que l'usuari reconeix que la informació i les dades personals que proporciona són seves, actuals, exactes i certes.</p>
+                <p>Així mateix, posem a la seva disposició tota la informació en matèria de protecció de dades segons el tipus de relació que pugui mantenir amb nosaltres:</p>
+
+                <h4>Identitat del Responsable del Tractament:</h4>
+                <p>SINDICAT CATALÀ DE PRESONS (SICAP) CIF G22580633<br>
+                Domicili: c/ Malats, 27, 08030 Barcelona.<br>
+                Tel. 933 426 810 - Fax 933 426 811.<br>
+                E-mail: sicap@sicap.cat</p>
+
+                <h4>Delegat de Protecció de Dades:</h4>
+                <p>Adreça: c/ Malats, 27, 08030 Barcelona. Tel. 933 426 810 - Fax 933 426 811.<br>
+                E-mail: protecciodades@fepol.cat</p>
+
+                <h4>Finalitat i temps de conservació de les dades</h4>
+                <p>Si ens ha enviat el full d’afiliació o una sol·licitud per afiliar-se en qualsevol altra forma, tractem les seves dades amb la finalitat de gestió administrativa de les persones interessades en afiliar-se.</p>
+                <p>Si ja s’ha afiliat al sindicat, tractem la informació que ens faciliten les persones interessades amb la finalitat de gestió administrativa, fiscal i de defensa jurídica als afiliats del sindicat, així com per la gestió de les contrasenyes dels afiliats que tenen accés a l'espai reservat de la pàgina web del sindicat, en el seu cas.</p>
+                <p>Si és representant sindical, delegat o alliberat, tractem les seves dades amb la finalitat de gestió de les persones afiliades que són representants sindicals, delegats i/o alliberats del sindicat.</p>
+                <p>Les dades personals proporcionades es conservaran per aquesta entitat entre es presti els serveis, i posteriorment durant termini legal que sigui exigible, en seu defecte, durant 5 anys després d’haver finalitzat la seva relació amb el sindicat, o el temps que prevegi a cada moment la normativa en vigor per exigir qualsevol tipus de responsabilitat.</p>
+                <p>En cas que ens hagi donat el seu consentiment per poder rebre informació sobre les activitats, noticies i esdeveniments dels que aquest sindicat sigui part, o considerem que pugui ser del seu interés, tractarem les seves dades amb la finalitat de gestió administrativa per l’enviament d’aquest tipus d’informació vía correu postal, electrònic i sms. En aquest cas, conservarem les seves dades mentre no revoqui el seu consentiment, i posteriorment durant termini legal que sigui exigible, en seu defecte, durant el temps que prevegi a cada moment la normativa en vigor per exigir qualsevol tipus de responsabilitat, que previsiblement serà de 3 anys desde que va revocar el consentiment.</p>
+
+                <h4>Legitimació pel tractament de les dades</h4>
+                <p>Les finalitats amb les que tractem les seves dades poden ser:</p>
+                <ul>
+                    <li>a) Si ens ha enviat el full d’afiliació o una sol·licitud per afiliar-se en qualsevol altra forma, tractem les seves dades amb la finalitat de gestió administrativa de les persones interessades en afiliar-se.</li>
+                    <li>b) Si ja s’ha afiliat al sindicat, tractem la informació que ens faciliten les persones interessades amb la finalitat de gestió administrativa, fiscal i de defensa jurídica als afiliats del sindicat.</li>
+                    <li>c) Si és representant sindical, delegat o alliberat, tractem les seves dades amb la finalitat de gestió de les persones afiliades que són representants sindicals, delegats i/o alliberats del sindicat.</li>
+                </ul>
+                <p>Les dades personals proporcionades en qualsevol dels tres supòsits anterios (a, b i c) es conservaran per aquesta entitat entre es presti els serveis, i posteriorment durant termini legal que sigui exigible, en seu defecte, durant 5 anys després d’haver finalitzat la seva relació amb el sindicat, o el temps que prevegi a cada moment la normativa en vigor per exigir qualsevol tipus de responsabilitat.</p>
+                <p>En cas que tinguem habilitada la “zona privada” pels afiliats en la nostra pàgina web i vostè tingui accés, únicament conservarem les seves claus d’accés des de que li donem d’alta a l’esmentada “zona privada” fins que ens demani la baixa a la mateixa o bé causi baixa del sindicat.</p>
+                <ul>
+                    <li>d) En cas que ens hagi donat el seu consentiment per poder rebre informació sobre les activitats, noticies i esdeveniments dels que SICAP sigui part, o considerem que pugui ser del seu interés, tractarem les seves dades amb la finalitat de gestió administrativa per l’enviament d’aquest tipus d’informació vía correu postal, electrònic i sms.</li>
+                    <li>e) Si ens envia una consulta o ens demana informació a través del nostre formulari web, tractarem les seves dades per la gestió administrativa de les persones que es posen en contacte amb el sindicat per fer una consulta o demanar informació.</li>
+                </ul>
+                <p>Les dades personals proporcionades en qualsevol dels dos supòsits anterios (d i e) conservarem les seves dades mentre no revoqui el seu consentiment, i posteriorment durant termini legal que sigui exigible, en seu defecte, durant el temps que prevegi a cada moment la normativa en vigor per exigir qualsevol tipus de responsabilitat, que previsiblement serà de 3 anys desde que va revocar el consentiment.</p>
+
+                <h4>Destinataris de la cessió o comunicació de dades</h4>
+                <p>Les dades que ens proporcionin per qualsevol via, en paper, mitjançant formularis, pàgina web o correu electrònic, no seran cedides a persones físiques ni jurídiques públiques o privades sense el seu consentiment, o bé si ho autoritza una llei o concórre alguna causa de legitimitat dels qeu preveu l’art. 6 RGPD. Així mateix, es cediràn les seves dades a l’entitat bancària pel cobrament de la quota sindical.</p>
+                <p>Així mateix, les seves dades podran ser proporcionades a aquelles entitats que ens prestin serveis, com és la FEDERACIO DE PROFESSIONALS DE LA SEGURETAT PUBLICA DE CATALUNYA (FEPOL), amb CIF G66327768 i mateix domicili social que aquest sindicat, en virtut del conveni de col·laboració subscrit.</p>
+                <p>En cas d’utilitzar el whatsapp per relacionar-se amb nosaltres, o amb representants en el marc de les seves funcions, així com si es fa seguidor del nostre compte a les xarxes socials (facebook, twiter, instagram i youtube), li informem que es tracten d’entitats que tenen els seus servidors i/o proveïdors de serveis fora de l’Espai Econòmic Europeu, per tant, es produeix una transferència internacional de dades, si bé compleix amb els estàndards que garanteixen el compliment de la normativa en protecció de dades vigent a la UE, atès que únicament transfereixen dades a països reconeguts com segurs per les Decisions d’adeqüació de la Comissió Europea, o bé perquè té subscrites clàusules contractuals tipus aprovades també per la Comissió Europea, la còpia dels quals por demanar-la a le esmentades entitats o bé ens ho pot demanar a nosaltres en qualsevol moment.</p>
+
+                <h4>Drets dels usuaris en protecció de dades</h4>
+                <p>Tota persona té dret a obtenir confirmació sobre si en aquest sindicat estem tractant dades personals que els concerneixin o no. Així mateix, tindran dret a sol·licitar l'accés a les dades personals relatives a l'interessat, la seva rectificació, supressió, la limitació del seu tractament, a oposar-se al tractament, així com a la portabilitat de les dades.</p>
+                <p>En aquest sindicat no fem perfils de persones ni adoptem decisions basades únicament en el tractament automatizat de dades, que tingui efectes jurídics.</p>
+                <p>Així mateix, en cas que hagués atorgat el seu consentiment per a alguna finalitat específica diferent a la prestació del servei o de la relació principal que li uneix a aquesta entitat, pot retirar el seu consentiment en qualsevol moment, sense que això afecti a qualsevol altra relació que li uneix a nosaltres.</p>
+                <p>Per exercir qualsevol dels drets d’accés, rectificació, supressió, oposició, limitació del tractament, portabilitat de les seves dades, o vol retirar el consentiment que ens pugui haver atorgat pel tractament de les seves dades, l'interessat pot dirigir-se a qualsevol de les dades de contacte assenyalats a l'apartat “Identitat del Responsable del Tractament”.</p>
+                <p>En cas que no s'hagi obtingut contestació a l'exercici dels seus drets o no estigui d'acord amb la mateixa, pot interposar la corresponent reclamació davant el Delegat de Protecció de Dades a les dades de contacte indicades més amunt, o bé directament a l'Agència Espanyola de Protecció de Dades, www.aepd.es, carrer Jorge Juan, 6, 28001 Madrid.</p>
+
+                <h4>Seguidors i usuaris de les nostres xarxes socials</h4>
+                <p>Si es fa seguidor a les nostres xarxes socials i/o publica algún missatge al nostre compte o espai, consulti la nostra política de xarxes socials ubicada al peu d’aquesta pàgina web.</p>
+            </div>
+            <div style="text-align: right; margin-top:15px;">
+                <button class="btn-primary" onclick="document.getElementById('modal-privacitat').style.display='none'" style="width:auto;">Tancar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. MODAL POLÍTICA DE COOKIES -->
+    <div id="modal-cookies" class="modal-overlay" style="display: none;">
+        <div class="modal-card" style="max-width: 900px; text-align: left;">
+            <h3 style="color:var(--brand-blue); border-bottom:1px solid #eee; padding-bottom:10px;">Política de Cookies</h3>
+            <div class="legal-text-content">
+                <h4>Què són les cookies?</h4>
+                <p>Una cookie és un arxiu que es descarrega en el seu ordinador en accedir a determinades pàgines web. Les cookies tenen finalitats molt diverses, com per exemple, reconèixer-vos com a usuari, emmagatzemar i recuperar informació sobre els hàbits de navegació d'un usuari o del seu equip, personalitzar la forma en què es mostra el contingut i, depenent de la informació que continguin i de la forma en què utilitzi el seu equip, es poden utilitzar per reconèixer a l'usuari.</p>
+                <p>Els usos concrets que fem es descriuen a continuació.</p>
+
+                <h4>Quins tipus de cookies utilitza aquesta pàgina web?</h4>
+                <ul>
+                    <li><strong>Cookies pròpies:</strong> Són aquelles que s'envien a l'equip terminal de l' usuari des d'un equip o domini gestionat pel propi editor i des del qual es presta el servei sol · licitat per l'usuari.</li>
+                    <li><strong>Cookies de tercers:</strong> son aquelles que s’envien al terminal de l’usuari des d’un equip o domini que no és gestionat per l’editor, sinó per altra entitat que tracta les dades obtingudes a través de les cookies. En el present cas els tercers venen especificats al quadre on consta el llistat de totes les cookies que utilitzem. Pot accedir a la informació sobre la utilització de les cookies d’aquests tercers, inclosa la seva política de privacitat i de cookies, així com les transferències internacionals de dades, a les seves respectives pàgines web. Tingueu en compte que si accepta cookies de tercers, necessitareu eliminar-los de les opcions navegador o des del sistema ofert pel propi tercer.</li>
+                    <li><strong>Cookies de sessió:</strong> són les dissenyades per recopilar i emmagatzemar dades mentre l'usuari accedeix a un lloc web. Solen ser utilitzades per emmagatzemar informació que només interessa conservar per a la prestació del servei sol·licitat per l'usuari en una única ocasió i desapareixen al final de la sessió.</li>
+                    <li><strong>Cookies persistents:</strong> Són un tipus de cookies en el qual les dades segueixen emmagatzemats en el terminal i poden ser accedits i tractats durant un període definit pel responsable de la cookie , i que pot anar d'uns minuts a diversos anys.</li>
+                    <li><strong>Cookies tècniques:</strong> Son aquelles necessàries per poder navegar pel lloc web, plataforma o aplicació i l'ús de les diferents opcions dels serveis que hi ha, incloent-hi aquelles que l'editor utilitza per permetre la gestió i el funcionament de la pàgina web i habiliten les seves funcions i serveis, com per exemple, controlar el trànsit i la comunicació, identificar la sessió, accedir a parts d’accés restringit, utilitzar elements de seguretat durant l'emmagatzematge de continguts per a la difusió de vídeos o so, entre moltes altres.</li>
+                    <li><strong>Cookies d'anàlisi:</strong> Són aquelles que permeten quantificar el nombre d'usuaris i així realitzar el mesurament i anàlisi estadística de la utilització que fan els usuaris de la pàgina web, aplicació o plataforma, amb l'objectiu d'introduir millores basant-se en l'anàlisi de dades d'ús que fan els usuaris del servei.</li>
+                    <li><strong>Cookies de publicitat comportamental:</strong> Són aquelles que emmagatzemen informació sobre el comportament de l'usuari mitjançant l'observació continuada dels seus hàbits de navegació, permetent desenvolupar un perfil específic per mostrar publicitat basada en ella.</li>
+                </ul>
+
+                <h4>Llistat de cookies que utilitzem:</h4>
+                <div style="overflow-x:auto;">
+                    <table class="cookie-table">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Identitat (editor)</th>
+                                <th>Tipus - Editor</th>
+                                <th>Tipus - Finalitat</th>
+                                <th>Tipus- Caducitat</th>
+                                <th>Duració</th>
+                                <th>Finalitat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>sicapCookie</td><td>FEPOL</td><td>Pròpies</td><td>Tècnica</td><td>Tècnica</td><td>1 any</td><td>Cookie que guarda el consentiment.</td></tr>
+                            <tr><td>_pubCook</td><td>FEPOL</td><td>Pròpies</td><td>Tècnica</td><td>Tècnica</td><td>1 any</td><td>Cookie preferències publicitat.</td></tr>
+                            <tr><td>_anaCook</td><td>FEPOL</td><td>Pròpies</td><td>Tècnica</td><td>Tècnica</td><td>1 any</td><td>Cookie preferències analítiques.</td></tr>
+                            <tr><td>JSESSIONID</td><td>FEPOL</td><td>Pròpies</td><td>Tècnica</td><td>De Sessió</td><td>Sessió</td><td>Cookie de sessió i seguretat.</td></tr>
+                            <tr><td>datr</td><td>Facebook</td><td>de tercers</td><td>Tècnica</td><td>Permanent</td><td>2 anys</td><td>Identificador seguretat navegador.</td></tr>
+                            <tr><td>sb</td><td>Facebook</td><td>de tercers</td><td>Publicitària</td><td>Permanent</td><td>2 anys</td><td>Detalls navegador i sessió.</td></tr>
+                            <tr><td>personalization_id</td><td>Twitter</td><td>de tercers</td><td>Analítica</td><td>Permanent</td><td>2 anys</td><td>Integració Twitter.</td></tr>
+                            <tr><td>CONSENT</td><td>Youtube</td><td>de tercers</td><td>Técnica</td><td>Permanent</td><td>2 anys</td><td>Control d’acceptació cookies.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p style="margin-top:20px;">Si vol consultar la nostra informació sobre la privacitat de les dades, pot entrar a la “Política de Privacitat” ubicada al peu de la present pàgina web.</p>
+                <p>Si vol consultar la política de privacitat dels tercers (Facebook, twitter i youtube), i/o la seva política de cookies, pot consultarla a les seves respectives pàgines web.</p>
+
+                <h4>Configuració, revocació i eliminació de cookies</h4>
+                <p>Vostè pot permetre, bloquejar o eliminar les cookies mitjançant el següent panell de configuració: <button class="btn-small">PANELL DE CONFIGURACIÓ</button></p>
+                <p>També pot bloquejar-les mitjançant la configuració de les opcions del navegador en el seu ordinador:</p>
+                <ul>
+                    <li><strong>Explorer:</strong> <a href="http://windows.microsoft.com/es-es/windows-vista/block-or-allow-cookies" target="_blank">Enllaç suport</a></li>
+                    <li><strong>Edge:</strong> <a href="https://support.microsoft.com/es-es/help/4027947/microsoft-edge-delete-cookies" target="_blank">Enllaç suport</a></li>
+                    <li><strong>Chrome:</strong> <a href="http://support.google.com/chrome/bin/answer.py?hl=es&answer=95647" target="_blank">Enllaç suport</a></li>
+                    <li><strong>Firefox:</strong> <a href="https://support.mozilla.org/es/kb/impedir-que-los-sitios-web-guarden-sus-preferencia" target="_blank">Enllaç suport</a></li>
+                    <li><strong>Safari:</strong> <a href="http://support.apple.com/kb/ph5042" target="_blank">Enllaç suport</a></li>
+                </ul>
+            </div>
+            <div style="text-align: right; margin-top:15px;">
+                <button class="btn-primary" onclick="document.getElementById('modal-cookies').style.display='none'" style="width:auto;">Tancar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONFIRMACIÓ GENÈRICA -->
+    <div id="custom-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-icon"><i class="fa-solid fa-circle-question"></i></div>
+            <h3 id="modal-title">Confirmació</h3>
+            <div id="modal-msg">Estàs segur?</div>
+            <div class="modal-actions">
+                <button id="modal-btn-cancel" class="btn-secondary">Cancel·lar</button>
+                <button id="modal-btn-confirm" class="btn-primary">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() { const savedTheme = localStorage.getItem('theme'); if(savedTheme) document.documentElement.setAttribute('data-theme', savedTheme); })();
+    </script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js?v=33.0"></script>
+    <script src="js/renderitzadorCurs.js?v=33.0"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('slug')) { document.getElementById('dashboard-view').style.display = 'none'; document.getElementById('exam-view').style.display = 'flex'; }
+            const themeBtn = document.getElementById('theme-toggle'); const icon = themeBtn.querySelector('i');
+            const current = localStorage.getItem('theme'); icon.className = current === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            themeBtn.addEventListener('click', () => {
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                const next = isDark ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next); localStorage.setItem('theme', next);
+                icon.className = next === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            });
+        });
+    </script>
+</body>
+</html>
