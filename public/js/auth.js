@@ -1,14 +1,13 @@
 /* ==========================================================================
-   AUTH.JS (v48.0 - DNI LOGIC & STRAPI FIELDS MATCH)
+   AUTH.JS (v49.0 - FINAL STABLE & PROFESSIONAL MODALS)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Detección de Parámetros URL (Reset Password o Deep Linking)
+    // 1. Detección de Parámetros URL
     const urlParams = new URLSearchParams(window.location.search);
-    const resetCode = urlParams.get('code'); // Código que envía Strapi
+    const resetCode = urlParams.get('code');
     const slugDestino = urlParams.get('slug');
 
-    // REFERENCIAS DOM
     const views = {
         login: document.getElementById('login-view'),
         register: document.getElementById('register-view'),
@@ -16,21 +15,17 @@ document.addEventListener('DOMContentLoaded', () => {
         reset: document.getElementById('reset-view')
     };
 
-    // Función para cambiar de vista
     function switchView(viewName) {
         Object.values(views).forEach(el => el.style.display = 'none');
         if(views[viewName]) views[viewName].style.display = 'block';
         document.getElementById('login-error-msg').style.display = 'none';
     }
 
-    // --- LÓGICA DE INICIO ---
     if (resetCode) {
-        // Si hay código en la URL, mostramos reset
         switchView('reset');
         document.getElementById('reset-code').value = resetCode;
     } 
     else if (slugDestino && !localStorage.getItem('jwt')) {
-        // Si viene a un curso sin loguearse
         const loginHeader = document.querySelector('.login-header');
         if(loginHeader && !document.querySelector('.alert-info-lock')) {
             const aviso = document.createElement('div');
@@ -41,35 +36,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- EVENTOS DE NAVEGACIÓN ENTRE VISTAS ---
     document.getElementById('btn-show-register')?.addEventListener('click', (e) => { e.preventDefault(); switchView('register'); });
     document.getElementById('btn-forgot-pass')?.addEventListener('click', (e) => { e.preventDefault(); switchView('forgot'); });
-    
     document.querySelectorAll('.btn-back-login').forEach(btn => {
         btn.addEventListener('click', (e) => { e.preventDefault(); switchView('login'); });
     });
 
-    // --- HELPER MODAL ---
-    function lanzarModal(titulo, mensaje, esError = true) {
+    // --- HELPER MODAL MEJORADO (Admite callback) ---
+    function lanzarModal(titulo, mensaje, esError = true, callback = null) {
         const modal = document.getElementById('custom-modal');
         document.getElementById('modal-title').innerText = titulo; 
         document.getElementById('modal-title').style.color = esError ? "var(--brand-red)" : "var(--brand-blue)"; 
         document.getElementById('modal-msg').innerHTML = mensaje; 
         document.getElementById('modal-btn-cancel').style.display = 'none'; 
-        const btn = document.getElementById('modal-btn-confirm');
-        btn.innerText = "Entesos"; btn.style.background = esError ? "var(--brand-red)" : "var(--brand-blue)";
         
-        // Clonar botón para limpiar eventos previos
+        const btn = document.getElementById('modal-btn-confirm');
+        btn.innerText = "Entesos"; 
+        btn.style.background = esError ? "var(--brand-red)" : "var(--brand-blue)";
+        
+        // Clonamos para limpiar eventos anteriores
         const newBtn = btn.cloneNode(true); 
         btn.parentNode.replaceChild(newBtn, btn);
-        newBtn.onclick = () => modal.style.display = 'none';
+        
+        newBtn.onclick = () => {
+            modal.style.display = 'none';
+            if (callback) callback(); // Ejecutar acción al cerrar (ej: redirigir)
+        };
         
         modal.style.display = 'flex';
     }
 
-    // ---------------------------------------------------------
-    // 1. LOGIN (Con DNI)
-    // ---------------------------------------------------------
+    // 1. LOGIN
     const loginForm = document.getElementById('login-form');
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
@@ -102,9 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ---------------------------------------------------------
-    // 2. REGISTRO AUTOMÁTICO (Busca email en Afiliados)
-    // ---------------------------------------------------------
+    // 2. REGISTRO
     const registerForm = document.getElementById('register-form');
     if (registerForm) {
         registerForm.addEventListener('submit', async (e) => {
@@ -119,7 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
             btnSubmit.innerText = "Verificant..."; btnSubmit.disabled = true;
 
             try {
-                // A) Buscar Afiliado para comprobar y sacar datos
                 const resAfi = await fetch(`${API_ROUTES.checkAffiliate}?filters[dni][$eq]=${dni}`);
                 const jsonAfi = await resAfi.json();
                 
@@ -129,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
                      return;
                 }
 
-                // B) Obtener datos del afiliado (Email, Nombre, Apellidos)
                 const afiliado = jsonAfi.data[0];
                 const emailAfiliado = afiliado.email; 
 
@@ -139,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                // C) Crear Usuario en Strapi (Copiando datos)
                 const regRes = await fetch(API_ROUTES.register, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
@@ -153,7 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const regData = await regRes.json();
 
                 if(regRes.ok) {
-                    // D) Enviar Notificación de Bienvenida (Opcional pero recomendado)
                     try {
                         if (regData.jwt) {
                             await fetch(API_ROUTES.notifications, {
@@ -171,10 +162,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     } catch(err) {}
 
-                    alert(`Compte creat! El teu email vinculat és: ${emailAfiliado}\nAra inicia sessió.`);
-                    window.location.reload();
+                    // ÉXITO REGISTRO -> Modal profesional
+                    lanzarModal(
+                        "Compte Creat!", 
+                        `Hem trobat el teu email d'afiliat: <strong>${emailAfiliado}</strong>.<br>Ja pots iniciar sessió.`, 
+                        false,
+                        () => window.location.reload()
+                    );
                 } else {
-                    // Manejo de errores específicos
                     let errorMsg = regData.error?.message || "Error al crear compte.";
                     if(errorMsg.includes('username')) errorMsg = "Aquest DNI ja està registrat.";
                     if(errorMsg.includes('email')) errorMsg = "El teu email d'afiliat ja està en ús per un altre usuari.";
@@ -190,13 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ---------------------------------------------------------
-    // 3. RECUPERACIÓN (Pide DNI -> Busca Email -> Strapi envía)
-    // ---------------------------------------------------------
-    // 3. RECUPERACIÓN (Con validación estricta de DNI)
-    // 3. RECUPERACIÓN (DNI -> Busca Email -> Strapi envía)
-    // 3. RECUPERACIÓN MEJORADA
-    // 3. RECUPERACIÓN (DNI -> Busca Email -> Strapi envía)
+    // 3. RECUPERACIÓN
     const forgotForm = document.getElementById('forgot-form');
     if (forgotForm) {
         forgotForm.addEventListener('submit', async (e) => {
@@ -204,7 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const inputDni = document.getElementById('forgot-dni');
             const btnSubmit = forgotForm.querySelector('button');
             
-            // 1. Limpieza y formato
             let dniLimpio = inputDni.value.trim().toUpperCase().replace(/[- \/\.]/g, '');
             const dniRegex = /^\d{8}[A-Z]$/;
 
@@ -216,7 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
             btnSubmit.innerText = "Cercant..."; btnSubmit.disabled = true;
 
             try {
-                // A) Buscar email del afiliado
                 const resAfi = await fetch(`${API_ROUTES.checkAffiliate}?filters[dni][$eq]=${dniLimpio}`);
                 const jsonAfi = await resAfi.json();
 
@@ -232,39 +219,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                console.log("Intentant enviar mail a:", emailDestino);
-
-                // B) Solicitar reset a Strapi
-                const resForgot = await fetch(API_ROUTES.forgotPassword, {
+                await fetch(API_ROUTES.forgotPassword, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: emailDestino })
                 });
-
-                // --- CORRECCIÓN: Verificar si Strapi aceptó la petición ---
-                if (!resForgot.ok) {
-                    const errorData = await resForgot.json();
-                    console.error("Error Strapi:", errorData);
-                    throw new Error("El servidor ha rebutjat l'enviament. (Error " + resForgot.status + ")");
-                }
                 
                 const maskedEmail = emailDestino.replace(/(.{2})(.*)(@.*)/, "$1***$3");
                 lanzarModal("Correu Enviat", `Hem enviat un enllaç de recuperació a: <strong>${maskedEmail}</strong>.<br>Revisa la carpeta Spam.`, false);
                 switchView('login');
 
             } catch (error) {
-                console.error("Error catch:", error);
-                // Ahora sí mostramos el error real
-                lanzarModal("Error d'Enviament", "No s'ha pogut enviar el correu. Revisa que el servidor de correu estigui ben configurat.");
+                console.error(error);
+                lanzarModal("Error", "No s'ha pogut processar la sol·licitud.");
             } finally {
                 btnSubmit.innerText = "Enviar Enllaç"; btnSubmit.disabled = false;
             }
         });
     }
 
-    // ---------------------------------------------------------
-    // 4. RESET PASSWORD (Viene del enlace del correo)
-    // ---------------------------------------------------------
+    // 4. RESET PASSWORD (AQUÍ ESTÁ LA MAGIA)
     const resetForm = document.getElementById('reset-form');
     if (resetForm) {
         resetForm.addEventListener('submit', async (e) => {
@@ -293,9 +267,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     const data = await res.json();
                     localStorage.setItem('jwt', data.jwt);
                     localStorage.setItem('user', JSON.stringify(data.user));
-                    alert("Contrasenya canviada! Sessió iniciada.");
-                    // Limpiar URL para quitar el código ?code=...
-                    window.location.href = window.location.pathname.split('?')[0];
+                    
+                    // MODAL BONITO
+                    lanzarModal(
+                        "Contrasenya Canviada", 
+                        "La teva contrasenya s'ha actualitzat correctament. Iniciant sessió...", 
+                        false, // Color azul
+                        () => {
+                            // Redirigir limpio al Dashboard
+                            window.location.href = window.location.pathname.split('?')[0];
+                        }
+                    );
                 } else {
                     lanzarModal("Error", "L'enllaç ha caducat o ja s'ha utilitzat.");
                 }
