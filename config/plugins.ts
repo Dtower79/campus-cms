@@ -1,4 +1,5 @@
 export default ({ env }) => ({
+  // 1. Configuración de Cloudinary (Imágenes/Vídeos)
   upload: {
     config: {
       provider: 'cloudinary',
@@ -14,6 +15,30 @@ export default ({ env }) => ({
         },
         uploadStream: {},
         delete: {},
+      },
+    },
+  },
+
+  // 2. Configuración de Email (Nodemailer) - NUEVO
+  email: {
+    config: {
+      provider: 'nodemailer',
+      providerOptions: {
+        host: env('SMTP_HOST'),
+        port: env.int('SMTP_PORT', 465),
+        secure: true, // true para puerto 465
+        auth: {
+          user: env('SMTP_USERNAME'),
+          pass: env('SMTP_PASSWORD'),
+        },
+        // Fix común para servidores antiguos que rechazan certificados
+        tls: {
+          rejectUnauthorized: false
+        },
+      },
+      settings: {
+        defaultFrom: 'formacio@sicap.cat',
+        defaultReplyTo: 'formacio@sicap.cat',
       },
     },
   },
