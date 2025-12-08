@@ -1,5 +1,5 @@
 export default ({ env }) => ({
-  // 1. Configuración de Cloudinary (Imágenes/Vídeos)
+  // 1. Cloudinary (Sin cambios)
   upload: {
     config: {
       provider: 'cloudinary',
@@ -19,19 +19,20 @@ export default ({ env }) => ({
     },
   },
 
-  // 2. Configuración de Email (Nodemailer) - NUEVO
+  // 2. Email con DEBUG ACTIVADO
   email: {
     config: {
       provider: 'nodemailer',
       providerOptions: {
         host: env('SMTP_HOST'),
-        port: env.int('SMTP_PORT', 587),
-        secure: false, // true para puerto 465
+        port: env.int('SMTP_PORT', 465),
+        secure: true, // Volvemos a TRUE porque usaremos el 465
+        debug: true,  // <--- ESTO NOS DIRÁ LA VERDAD
+        logger: true, // <--- ESTO NOS DIRÁ LA VERDAD
         auth: {
           user: env('SMTP_USERNAME'),
           pass: env('SMTP_PASSWORD'),
         },
-        // Fix común para servidores antiguos que rechazan certificados
         tls: {
           rejectUnauthorized: false
         },
