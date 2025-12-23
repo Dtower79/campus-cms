@@ -557,6 +557,8 @@ export interface ApiCursCurs extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::matricula.matricula'
     >;
+    mode_esborrany: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
     moduls: Schema.Attribute.Relation<'oneToMany', 'api::modul.modul'>;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.String & Schema.Attribute.Unique;
