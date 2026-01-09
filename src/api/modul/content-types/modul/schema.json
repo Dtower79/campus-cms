@@ -38,22 +38,14 @@
       "component": "material.flashcard",
       "repeatable": true
     },
-    "video_fitxer": {
-      "type": "media",
-      "multiple": false,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
-    },
-    "video_url": {
-      "type": "string"
-    },
     "banc_preguntes": {
       "type": "component",
       "component": "quiz.pregunta",
+      "repeatable": true
+    },
+    "videos": {
+      "type": "component",
+      "component": "material.video",
       "repeatable": true
     }
   }

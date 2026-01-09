@@ -11,6 +11,18 @@ export interface MaterialFlashcard extends Struct.ComponentSchema {
   };
 }
 
+export interface MaterialVideo extends Struct.ComponentSchema {
+  collectionName: 'components_material_videos';
+  info: {
+    displayName: 'Video';
+  };
+  attributes: {
+    fitxer: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    titol: Schema.Attribute.String;
+    url: Schema.Attribute.String;
+  };
+}
+
 export interface QuizOpcio extends Struct.ComponentSchema {
   collectionName: 'components_quiz_opcio';
   info: {
@@ -40,6 +52,7 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'material.flashcard': MaterialFlashcard;
+      'material.video': MaterialVideo;
       'quiz.opcio': QuizOpcio;
       'quiz.pregunta': QuizPregunta;
     }

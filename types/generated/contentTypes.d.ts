@@ -674,10 +674,7 @@ export interface ApiModulModul extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    video_fitxer: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios'
-    >;
-    video_url: Schema.Attribute.String;
+    videos: Schema.Attribute.Component<'material.video', true>;
   };
 }
 
