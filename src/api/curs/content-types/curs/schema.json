@@ -66,6 +66,11 @@
     "mode_esborrany": {
       "type": "boolean",
       "default": false
+    },
+    "videos": {
+      "type": "component",
+      "component": "material.video",
+      "repeatable": true
     }
   }
 }
