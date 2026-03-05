@@ -47,6 +47,9 @@
       "type": "component",
       "component": "material.video",
       "repeatable": true
+    },
+    "es_extra": {
+      "type": "boolean"
     }
   }
 }

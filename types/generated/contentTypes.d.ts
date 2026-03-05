@@ -663,6 +663,7 @@ export interface ApiModulModul extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     curs: Schema.Attribute.Relation<'manyToOne', 'api::curs.curs'>;
+    es_extra: Schema.Attribute.Boolean;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::modul.modul'> &
       Schema.Attribute.Private;
