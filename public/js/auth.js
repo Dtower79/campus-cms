@@ -1,5 +1,5 @@
 /* ==========================================================================
-   AUTH.JS (v49.0 - FINAL STABLE & PROFESSIONAL MODALS)
+   AUTH.JS (v50.0 - FINAL STABLE & PROFESSIONAL MODALS)
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -22,9 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (resetCode) {
+        // Forzamos que el fondo oscuro del login sea visible
+        const overlay = document.getElementById('login-overlay');
+        if(overlay) overlay.style.display = 'flex'; 
+        
         switchView('reset');
         document.getElementById('reset-code').value = resetCode;
-    } 
+    }
     else if (slugDestino && !localStorage.getItem('jwt')) {
         const loginHeader = document.querySelector('.login-header');
         if(loginHeader && !document.querySelector('.alert-info-lock')) {
@@ -109,6 +113,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const passConf = document.getElementById('reg-pass-conf').value;
             const btnSubmit = registerForm.querySelector('button[type="submit"]');
 
+            // VALIDACIÓN QUIRÚRGICA: Mínimo 6 caracteres
+            if (pass.length < 6) {
+                return lanzarModal("Contrasenya massa curta", "La contrasenya ha de tenir almenys 6 caràcters.");
+            }
+
             if(pass !== passConf) return lanzarModal("Error", "Les contrasenyes no coincideixen.");
             
             btnSubmit.innerText = "Verificant..."; btnSubmit.disabled = true;
@@ -133,13 +142,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 const regRes = await fetch(API_ROUTES.register, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
-                        username: dni, 
+                        username: dni,      // El DNI es el identificador único
                         email: emailAfiliado, 
-                        password: pass,
-                        nombre: afiliado.nombre || "", 
-                        apellidos: afiliado.apellidos || ""
+                        password: pass      // Eliminamos 'nombre' y 'apellidos' de aquí
                     })
                 });
                 const regData = await regRes.json();
@@ -238,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 4. RESET PASSWORD (AQUÍ ESTÁ LA MAGIA)
+    // 4. RESET PASSWORD (Lógica del botón Guardar Canvis)
     const resetForm = document.getElementById('reset-form');
     if (resetForm) {
         resetForm.addEventListener('submit', async (e) => {
@@ -248,7 +256,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const passConf = document.getElementById('reset-pass-conf').value;
             const btnSubmit = resetForm.querySelector('button');
 
-            if (pass !== passConf) return lanzarModal("Error", "Les contrasenyes no coincideixen.");
+            // Validación de longitud
+            if (pass.length < 6) {
+                return lanzarModal("Contrasenya massa curta", "La contrasenya ha de tenir almenys 6 caràcters.");
+            }
+
+            // Validación de coincidencia
+            if (pass !== passConf) {
+                return lanzarModal("Error", "Les contrasenyes no coincideixen.");
+            }
 
             btnSubmit.innerText = "Canviant..."; btnSubmit.disabled = true;
 
@@ -265,27 +281,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (res.ok) {
                     const data = await res.json();
+                    // Guardamos la nueva sesión
                     localStorage.setItem('jwt', data.jwt);
                     localStorage.setItem('user', JSON.stringify(data.user));
                     
-                    // MODAL BONITO
                     lanzarModal(
                         "Contrasenya Canviada", 
                         "La teva contrasenya s'ha actualitzat correctament. Iniciant sessió...", 
-                        false, // Color azul
+                        false, 
                         () => {
-                            // Redirigir limpio al Dashboard
-                            window.location.href = window.location.pathname.split('?')[0];
+                            // REDIRECCIÓN LIMPIA: Quita el ?code= de la barra de direcciones
+                             window.location.href = 'index.html';
                         }
                     );
                 } else {
-                    lanzarModal("Error", "L'enllaç ha caducat o ja s'ha utilitzat.");
+                    lanzarModal("Error", "L'enllaç ha caducat o ya s'ha utilitzat.");
                 }
             } catch (error) {
-                lanzarModal("Error", "Error de connexió.");
+                lanzarModal("Error de Connexió", "No s'ha pogut conectar amb el servidor.");
             } finally {
                 btnSubmit.innerText = "Guardar Canvis"; btnSubmit.disabled = false;
             }
         });
     }
 });
+
+window.togglePasswordVisibility = function(inputId, iconElement) {
+    const input = document.getElementById(inputId);
+    if (input.type === "password") {
+        input.type = "text";
+        iconElement.classList.replace("fa-eye", "fa-eye-slash");
+        iconElement.style.color = "var(--brand-blue)";
+    } else {
+        input.type = "password";
+        iconElement.classList.replace("fa-eye-slash", "fa-eye");
+        iconElement.style.color = "#999";
+    }
+}

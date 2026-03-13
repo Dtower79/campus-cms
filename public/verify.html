@@ -18,10 +18,7 @@
         .status-invalid { color: #dc3545; }
         .data-row { display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px dashed #eee; padding-bottom: 5px; text-align: left; }
         .data-label { color: #666; font-size: 0.9rem; min-width: 80px; }
-        
-        /* AJUSTE PARA REFERENCIA LARGA */
         .data-val { font-weight: bold; color: #333; text-align: right; word-break: break-all; }
-        
         .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--brand-blue); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
@@ -52,7 +49,7 @@
             }
 
             try {
-                // Strapi query
+                // 1. CONSULTA DE LA MATRÍCULA
                 const url = `${STRAPI_URL}/api/matriculas/${ref}?populate=curs&populate=users_permissions_user`;
                 const res = await fetch(url);
                 
@@ -66,12 +63,30 @@
                     return;
                 }
 
+                // Extraiem el DNI (username)
+                const dniAlumno = data.users_permissions_user?.username || "";
+                let nombreReal = dniAlumno; // Fallback per si no trobem l'afiliat
+
+                // 2. CONSULTA DEL NOM REAL A LA TAULA D'AFILIATS
+                if (dniAlumno) {
+                    try {
+                        const resAfi = await fetch(`${STRAPI_URL}/api/afiliados?filters[dni][$eq]=${dniAlumno}`);
+                        const jsonAfi = await resAfi.json();
+                        if (jsonAfi.data && jsonAfi.data.length > 0) {
+                            const afi = jsonAfi.data[0];
+                            nombreReal = `${afi.nombre} ${afi.apellidos}`;
+                        }
+                    } catch (err) {
+                        console.warn("No s'ha pogut creuar amb la taula d'afiliats");
+                    }
+                }
+
                 // Lógica de validación
                 const notaNum = parseFloat(data.nota_final || data.progres_detallat?.examen_final?.nota || 0);
                 const isCompleted = data.estat === 'completat' || data.progres >= 100 || notaNum >= 5;
 
                 if (isCompleted) {
-                    showValid(data);
+                    showValid(data, nombreReal, dniAlumno);
                 } else {
                     showInvalid("Aquest curs consta com a NO COMPLETAT.");
                 }
@@ -80,24 +95,9 @@
                 showInvalid("No s'ha pogut verificar el document. Intent-ho més tard.");
             }
 
-            function showValid(data) {
+            function showValid(data, nombreReal, dni) {
                 card.style.borderColor = "#28a745";
                 
-                // Intentamos sacar datos del usuario
-                // Si Strapi bloquea 'users_permissions_user', intentamos fallbacks
-                const alumno = data.users_permissions_user || {};
-                
-                // Nombre: Si no hay nombre/apellidos, ponemos "Usuari Validat" para no poner "Dada protegida"
-                let nombreCompleto = "Usuari Validat";
-                if (alumno.nombre || alumno.apellidos) {
-                    nombreCompleto = `${alumno.nombre || ''} ${alumno.apellidos || ''}`;
-                } else if (alumno.username) {
-                    nombreCompleto = alumno.username; // A veces el username es el nombre
-                }
-
-                // DNI: El username suele ser el DNI en tu sistema
-                let dni = alumno.username || "***";
-
                 const curso = data.curs || { titol: 'Curs', hores: '0' };
                 const notaFinal = data.nota_final || data.progres_detallat?.examen_final?.nota || "Apte";
 
@@ -106,7 +106,7 @@
                     <h2 style="color:#28a745; margin-bottom:20px;">CERTIFICAT VÀLID</h2>
                     
                     <div class="data-row"><span class="data-label">Referència:</span> <span class="data-val">${data.documentId || ref}</span></div>
-                    <div class="data-row"><span class="data-label">Alumne:</span> <span class="data-val">${nombreCompleto.toUpperCase()}</span></div>
+                    <div class="data-row"><span class="data-label">Alumne:</span> <span class="data-val">${nombreReal.toUpperCase()}</span></div>
                     <div class="data-row"><span class="data-label">DNI:</span> <span class="data-val">${dni.toUpperCase()}</span></div>
                     <div class="data-row"><span class="data-label">Curs:</span> <span class="data-val">${curso.titol}</span></div>
                     <div class="data-row"><span class="data-label">Hores:</span> <span class="data-val">${curso.hores}h</span></div>
