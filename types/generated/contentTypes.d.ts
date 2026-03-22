@@ -582,6 +582,35 @@ export interface ApiAfiliadoAfiliado extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiBajaBaja extends Struct.CollectionTypeSchema {
+  collectionName: 'bajas';
+  info: {
+    displayName: 'Baja';
+    pluralName: 'bajas';
+    singularName: 'baja';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    centro_trabajo: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    dni: Schema.Attribute.String;
+    fecha_alta: Schema.Attribute.Date;
+    fecha_baja: Schema.Attribute.Date;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::baja.baja'> &
+      Schema.Attribute.Private;
+    nombre_completo: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCursCurs extends Struct.CollectionTypeSchema {
   collectionName: 'cursos';
   info: {
@@ -1325,6 +1354,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::afiliado.afiliado': ApiAfiliadoAfiliado;
+      'api::baja.baja': ApiBajaBaja;
       'api::curs.curs': ApiCursCurs;
       'api::matricula.matricula': ApiMatriculaMatricula;
       'api::missatge.missatge': ApiMissatgeMissatge;
