@@ -593,18 +593,25 @@ export interface ApiBajaBaja extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    categoria_profesional: Schema.Attribute.String;
     centro_trabajo: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    direccion: Schema.Attribute.String;
     dni: Schema.Attribute.String;
+    email: Schema.Attribute.Email;
     fecha_alta: Schema.Attribute.Date;
     fecha_baja: Schema.Attribute.Date;
+    iban: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::baja.baja'> &
       Schema.Attribute.Private;
     nombre_completo: Schema.Attribute.String;
+    poblacion: Schema.Attribute.String;
+    provincia: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    telefono_movil: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

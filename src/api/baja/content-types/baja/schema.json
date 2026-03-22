@@ -25,6 +25,27 @@
     },
     "fecha_baja": {
       "type": "date"
+    },
+    "email": {
+      "type": "email"
+    },
+    "telefono_movil": {
+      "type": "string"
+    },
+    "direccion": {
+      "type": "string"
+    },
+    "poblacion": {
+      "type": "string"
+    },
+    "provincia": {
+      "type": "string"
+    },
+    "categoria_profesional": {
+      "type": "string"
+    },
+    "iban": {
+      "type": "string"
     }
   }
 }
