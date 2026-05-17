@@ -9,11 +9,10 @@ const config: Core.Config.Middlewares = [
       contentSecurityPolicy: {
         useDefaults: true,
         directives: {
-          'connect-src': ["'self'", 'https:'],
-          // Permitimos que CKEditor inyecte sus estilos y scripts necesarios
+          'connect-src': ["'self'", 'https:', 'cdn.ckeditor.com'],
+          // Permitimos scripts y estilos de la CDN de CKEditor
           'script-src': ["'self'", "'unsafe-inline'", 'cdn.ckeditor.com'],
-          'style-src': ["'self'", "'unsafe-inline'"],
-          // Permitimos iconos (data:) y previsualizaciones (blob:) además de Cloudinary
+          'style-src': ["'self'", "'unsafe-inline'", 'cdn.ckeditor.com'],
           'img-src': [
             "'self'",
             'data:',
