@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_quiz_preguntas",
+  "info": {
+    "displayName": "Pregunta"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "text"
+    },
+    "explicacio": {
+      "type": "blocks"
+    },
+    "opcions": {
+      "type": "component",
+      "component": "quiz.opcio",
+      "repeatable": true
+    },
+    "es_multiresposta": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "config": {}
+}

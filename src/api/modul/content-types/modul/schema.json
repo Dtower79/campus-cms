@@ -1,0 +1,55 @@
+{
+  "kind": "collectionType",
+  "collectionName": "moduls",
+  "info": {
+    "singularName": "modul",
+    "pluralName": "moduls",
+    "displayName": "Modul"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "titol": {
+      "type": "string"
+    },
+    "resum": {
+      "type": "blocks"
+    },
+    "ordre": {
+      "type": "integer"
+    },
+    "curs": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::curs.curs",
+      "inversedBy": "moduls"
+    },
+    "material_pdf": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "targetes_memoria": {
+      "type": "component",
+      "component": "material.flashcard",
+      "repeatable": true
+    },
+    "banc_preguntes": {
+      "type": "component",
+      "component": "quiz.pregunta",
+      "repeatable": true
+    },
+    "videos": {
+      "type": "component",
+      "component": "material.video",
+      "repeatable": true
+    },
+    "es_extra": {
+      "type": "boolean"
+    }
+  }
+}

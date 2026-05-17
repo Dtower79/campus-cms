@@ -1,0 +1,47 @@
+{
+  "kind": "collectionType",
+  "collectionName": "matriculas",
+  "info": {
+    "singularName": "matricula",
+    "pluralName": "matriculas",
+    "displayName": "Matricula"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "estat": {
+      "type": "enumeration",
+      "enum": [
+        "actiu",
+        "completat",
+        "pendent"
+      ]
+    },
+    "nota_final": {
+      "type": "decimal"
+    },
+    "progres": {
+      "type": "integer"
+    },
+    "data_inici": {
+      "type": "datetime"
+    },
+    "curs": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::curs.curs",
+      "inversedBy": "matriculas"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "matriculas"
+    },
+    "progres_detallat": {
+      "type": "json"
+    }
+  }
+}

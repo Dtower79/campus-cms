@@ -1,0 +1,92 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cursos",
+  "info": {
+    "singularName": "curs",
+    "pluralName": "cursos",
+    "displayName": "Curs"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "titol": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string",
+      "unique": true
+    },
+    "mode_esborrany": {
+      "type": "boolean",
+      "default": false
+    },
+    "descripcio": {
+      "type": "blocks"
+    },
+    "hores": {
+      "type": "string"
+    },
+    "etiqueta": {
+      "type": "string"
+    },
+    "imatge": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "fecha_inicio": {
+      "type": "date"
+    },
+    "data_fi": {
+      "type": "date"
+    },
+    "glossari": {
+      "type": "customField",
+      "customField": "plugin::ckeditor.CKEditor",
+      "options": {
+        "output": "HTML",
+        "preset": "rich",
+        "licenseKey": "eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3ODAyNzE5OTksImp0aSI6IjdiZWUzOTA3LTc2NjQtNDY2Mi05ZjRhLTkxYWUwN2ZjOThjNSIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6ImE1YzA3ODgyIn0.FVwdMdvnc7qtlpqlfctPZWGETUDF7AEwCqdh91WZbW4sFQtmvBaFP99dJ98O6mgidSMyk5itp8fcGE57lfSf4Q"
+      }
+    },
+    "recursos_fitxers": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "moduls": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::modul.modul",
+      "mappedBy": "curs"
+    },
+    "matriculas": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::matricula.matricula",
+      "mappedBy": "curs"
+    },
+    "videos": {
+      "type": "component",
+      "component": "material.video",
+      "repeatable": true
+    },
+    "examen_final": {
+      "type": "component",
+      "component": "quiz.pregunta",
+      "repeatable": true
+    }
+  }
+}

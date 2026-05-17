@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_material_videos",
+  "info": {
+    "displayName": "Video"
+  },
+  "options": {},
+  "attributes": {
+    "titol": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "fitxer": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "notificaciones",
+  "info": {
+    "singularName": "notificacio",
+    "pluralName": "notificaciones",
+    "displayName": "Notificaciones"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "titol": {
+      "type": "string"
+    },
+    "missatge": {
+      "type": "text"
+    },
+    "llegida": {
+      "type": "boolean",
+      "default": false
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}
