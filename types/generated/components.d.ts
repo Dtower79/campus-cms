@@ -30,7 +30,7 @@ export interface QuizOpcio extends Struct.ComponentSchema {
   };
   attributes: {
     esCorrecta: Schema.Attribute.Boolean;
-    text: Schema.Attribute.String;
+    text: Schema.Attribute.Text;
   };
 }
 
@@ -44,7 +44,7 @@ export interface QuizPregunta extends Struct.ComponentSchema {
       Schema.Attribute.DefaultTo<false>;
     explicacio: Schema.Attribute.Blocks;
     opcions: Schema.Attribute.Component<'quiz.opcio', true>;
-    text: Schema.Attribute.String;
+    text: Schema.Attribute.Text;
   };
 }
 
