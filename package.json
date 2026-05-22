@@ -18,6 +18,8 @@
     "@ckeditor/strapi-plugin-ckeditor": "^1.1.2",
     "@strapi/plugin-cloud": "5.46.0",
     "@strapi/plugin-users-permissions": "5.46.0",
+    "@strapi/provider-email-nodemailer": "^5.46.1",
+    "@strapi/provider-upload-cloudinary": "^5.46.1",
     "@strapi/strapi": "5.46.0",
     "better-sqlite3": "12.8.0",
     "pg": "^8.20.0",
