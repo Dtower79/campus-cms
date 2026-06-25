@@ -88,6 +88,12 @@
       "type": "component",
       "component": "quiz.pregunta",
       "repeatable": true
+    },
+    "preguntes_simples_limit": {
+      "type": "integer"
+    },
+    "preguntes_multiples_limit": {
+      "type": "integer"
     }
   }
 }

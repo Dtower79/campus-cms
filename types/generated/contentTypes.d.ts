@@ -668,6 +668,8 @@ export interface ApiCursCurs extends Struct.CollectionTypeSchema {
     mode_esborrany: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     moduls: Schema.Attribute.Relation<'oneToMany', 'api::modul.modul'>;
+    preguntes_multiples_limit: Schema.Attribute.Integer;
+    preguntes_simples_limit: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
     recursos_fitxers: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
@@ -781,6 +783,8 @@ export interface ApiModulModul extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     material_pdf: Schema.Attribute.Media<'files', true>;
     ordre: Schema.Attribute.Integer;
+    preguntes_multiples_limit: Schema.Attribute.Integer;
+    preguntes_simples_limit: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
     resum: Schema.Attribute.Blocks;
     targetes_memoria: Schema.Attribute.Component<'material.flashcard', true>;
