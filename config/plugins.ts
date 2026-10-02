@@ -43,4 +43,17 @@ export default ({ env }) => ({
       },
     },
   },
+
+  // 3. CKEditor - Licencia Libre y Gratuita (GPL)
+  ckeditor: {
+    enabled: true,
+    config: {
+      plugin: {
+        licenseKey: env('CKEDITOR_LICENSE_KEY', 'GPL'),
+      },
+      editor: {
+        licenseKey: env('CKEDITOR_LICENSE_KEY', 'GPL'),
+      },
+    },
+  },
 });
