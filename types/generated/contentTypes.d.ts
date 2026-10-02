@@ -651,7 +651,7 @@ export interface ApiCursCurs extends Struct.CollectionTypeSchema {
       Schema.Attribute.CustomField<
         'plugin::ckeditor.CKEditor',
         {
-          licenseKey: 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3ODAyNzE5OTksImp0aSI6IjdiZWUzOTA3LTc2NjQtNDY2Mi05ZjRhLTkxYWUwN2ZjOThjNSIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6ImE1YzA3ODgyIn0.FVwdMdvnc7qtlpqlfctPZWGETUDF7AEwCqdh91WZbW4sFQtmvBaFP99dJ98O6mgidSMyk5itp8fcGE57lfSf4Q';
+          licenseKey: 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE4MTMxMDM5OTksImp0aSI6ImRhZGI3OGJmLWMwMjQtNDhjMy04NzI3LTZiM2NmN2EzY2RkNyIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiXSwiZmVhdHVyZXMiOlsiRFJVUCIsIkUyUCIsIkUyVyJdLCJyZW1vdmVGZWF0dXJlcyI6WyJQQiIsIlJGIiwiU0NIIiwiVENQIiwiVEwiLCJUQ1IiLCJJUiIsIlNVQSIsIkI2NEEiLCJMUCIsIkhFIiwiUkVEIiwiUEZPIiwiV0MiLCJGQVIiLCJCS00iLCJGUEgiLCJNUkUiLCJNRVIiXSwidmMiOiJmMjY2MmQ4ZiJ9.GVYCdQDLIjnh4UHDsex1-_Uu3RdekxWEB44ylv_eheYlBSsfSDV0vvN58Bzd2gBq9TNtk6BfF27QeUA2KQJiHQ';
           output: 'HTML';
           preset: 'rich';
         }
