@@ -53,7 +53,7 @@
       "options": {
         "output": "HTML",
         "preset": "rich",
-        "licenseKey": "eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3ODAyNzE5OTksImp0aSI6IjdiZWUzOTA3LTc2NjQtNDY2Mi05ZjRhLTkxYWUwN2ZjOThjNSIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6ImE1YzA3ODgyIn0.FVwdMdvnc7qtlpqlfctPZWGETUDF7AEwCqdh91WZbW4sFQtmvBaFP99dJ98O6mgidSMyk5itp8fcGE57lfSf4Q"
+        "licenseKey": "GPL"
       },
       "required": false
     },
