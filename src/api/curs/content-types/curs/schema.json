@@ -47,15 +47,11 @@
     "data_fi": {
       "type": "date"
     },
-    "glossari": {
-      "type": "customField",
-      "customField": "plugin::ckeditor.CKEditor",
-      "options": {
-        "output": "HTML",
-        "preset": "rich",
-        "licenseKey": "eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE4MTMxMDM5OTksImp0aSI6ImRhZGI3OGJmLWMwMjQtNDhjMy04NzI3LTZiM2NmN2EzY2RkNyIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiXSwiZmVhdHVyZXMiOlsiRFJVUCIsIkUyUCIsIkUyVyJdLCJyZW1vdmVGZWF0dXJlcyI6WyJQQiIsIlJGIiwiU0NIIiwiVENQIiwiVEwiLCJUQ1IiLCJJUiIsIlNVQSIsIkI2NEEiLCJMUCIsIkhFIiwiUkVEIiwiUEZPIiwiV0MiLCJGQVIiLCJCS00iLCJGUEgiLCJNUkUiLCJNRVIiXSwidmMiOiJmMjY2MmQ4ZiJ9.GVYCdQDLIjnh4UHDsex1-_Uu3RdekxWEB44ylv_eheYlBSsfSDV0vvN58Bzd2gBq9TNtk6BfF27QeUA2KQJiHQ"
-      },
-      "required": false
+    "glossari_fitxer": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["files"]
     },
     "recursos_fitxers": {
       "type": "media",
