@@ -28,6 +28,10 @@
     "hores": {
       "type": "string"
     },
+    "temps_examen_minuts": {
+      "type": "integer",
+      "default": 30
+    },
     "etiqueta": {
       "type": "string"
     },
