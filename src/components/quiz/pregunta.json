@@ -16,10 +16,14 @@
       "component": "quiz.opcio",
       "repeatable": true
     },
+    "nom_test": {
+      "type": "string"
+    },
     "es_multiresposta": {
       "type": "boolean",
       "default": false
     }
+
   },
   "config": {}
 }
