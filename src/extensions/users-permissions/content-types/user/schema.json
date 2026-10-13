@@ -88,6 +88,10 @@
       "type": "boolean",
       "default": false
     },
+    "es_professor_oposicions": {
+      "type": "boolean",
+      "default": false
+    },
     "missatges": {
       "type": "relation",
       "relation": "oneToMany",
