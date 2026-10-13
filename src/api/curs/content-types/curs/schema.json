@@ -32,6 +32,16 @@
       "type": "integer",
       "default": 30
     },
+    "es_oposicio": {
+      "type": "boolean",
+      "default": false
+    },
+    "enllac_zoom": {
+      "type": "string"
+    },
+    "horari_zoom": {
+      "type": "string"
+    },
     "etiqueta": {
       "type": "string"
     },
