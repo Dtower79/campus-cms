@@ -10,10 +10,10 @@
     },
     "resposta": {
       "type": "text"
+    },
+    "nom_grup": {
+      "type": "string"
     }
   },
-  "nom_grup": {
-      "type": "string"
-    },
   "config": {}
 }
